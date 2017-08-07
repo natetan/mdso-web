@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+
+	<head>
+		<title>mDSO Input Form</title>
+
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- Latest compiled and minified CSS -->
+		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+
+		<!-- Bootstrap-select -->
+		<link rel="stylesheet" href="node_modules/bootstrap-select/dist/css/bootstrap-select.min.css">
+
+		<!-- Optional theme -->
+		<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap-theme.min.css">
+
+		<!-- Your own css -->
+		<link rel="stylesheet" href="styles/styles.css">
+
+	</head>
+
+	<body>
+
+		<div id="main">
+
+			<!-- Left side content start -->
+			<div id="left-side-content">
+			
+				<!-- Banner start -->
+				<div id="top-banner">
+					<span id="title-header">DSO Update Report</span>
+					<!-- <span id="updated">Last Updated: Stuff</span> -->
+				</div>
+				<!-- Banner end -->
+
+				<!-- Dropdown start -->
+				<div id="dropdown-content">
+					
+					<!-- Dropdown left start -->
+					<div id="dropdown-content-left">
+						<div>
+							<label for="template-dropdown" class="labels">Template</label>
+						</div>
+						<div>
+							<select name="template-dropdown" id="template-dropdown" class="selectpicker dropdown-items">
+							  <option value="0930">0930 AM</option>
+							  <option value="1130">1130 AM</option>
+							  <option value="0130">0130 PM</option>
+							  <option value="0330">0330 PM</option>
+							</select>
+						</div>
+					</div>
+					<!-- Dropdown left end -->
+					
+					<!-- Dropdown right start -->
+					<div id="dropdown-content-right">
+						<div>
+							<label for="date-dropdown" class="labels">Date</label>
+						</div>
+						<div>
+							<select name="date-dropdown" id="date-dropdown" class="selectpicker dropdown-items">
+								<option value="date1">Date1</option>
+								<option value="date2">Date2</option>
+								<option value="date3">Date3</option>
+								<option value="date4">Date4</option>
+							</select>
+						</div>	
+					</div>
+					<!-- Dropdown left end -->
+
+				</div>
+
+				<!-- Dropdown end -->
+				<hr>
+				<!-- Form content start -->
+				<div id="form-content">
+					<div class="form-group">
+
+						<div class="form-sections">
+							<label for="comments" class="labels">IT System Status</label>
+							<textarea rows="3" name="itss" class="form-control text-area"></textarea>
+						</div>
+
+						<div class="form-sections">
+							<label for="cancellations" class="labels">Cancellations (XLS)</label>
+							<textarea rows="3" name="cancellations" class="form-control text-area"></textarea>
+						</div>
+
+						<div class="form-sections">
+							<label for="blf" class="labels">Delays</label>
+							<textarea rows="3" name="delays" class="form-control text-area"></textarea>
+						</div>	
+
+						<div class="form-sections">
+							<label for="weather" class="labels">Weather (WX)</label>
+							<textarea rows="3" name="weather" class="form-control text-area"></textarea>
+						</div>	
+
+						<div class="form-sections">
+							<label for="diversions" class="labels">Diversions</label>
+							<textarea rows="3" name="diversions" class="form-control text-area"></textarea>
+						</div>
+
+						<div class="form-sections">
+							<label for="atc" class="labels">Air Traffic Control (ATC)</label>
+							<textarea rows="3" name="atc" class="form-control text-area"></textarea>
+						</div>
+
+						<div class="form-sections">
+							<label for="ots" class="labels">Out of Service (OTS)</label>
+							<textarea rows="3" name="ots" class="form-control text-area"></textarea>
+						</div>
+						
+						<div class="form-sections">
+							<label for="spares" class="labels">Spares</label>
+							<textarea rows="3" name="spares" class="form-control text-area"></textarea>
+						</div>	
+
+						<div class="form-sections">
+							<label for="comments" class="labels">Comments</label>
+							<textarea rows="3" name="comments" class="form-control text-area"></textarea>
+						</div>
+						<button type="submit" disabled="true" id="verify-button" class="btn buttons"><span class="button-text">Verify</span></button>
+						<button type="submit" id="cancel-button" class="btn buttons"><span class="button-text">Cancel</span></button>
+					</div>
+				</div>
+				<!-- Form content end -->
+
+			</div>
+
+			<!-- Left side content end -->
+
+			
+			<div id="right-side-content">
+				<div id="airline-tabs">
+					<ul id="airline-list">
+						<li class="active tab-item"><span name="Alaska" class="airline-code">AS</span></li>
+						<li class="tab-item"><span name="Virgin" class="airline-code">VX</span></li>
+						<li class="tab-item"><span name="Horizon" class="airline-code">QX</span></li>
+						<li class="tab-item"><span name="SkyWest" class="airline-code">OO</span></li>
+						<li class="tab-item"><span name="PenAir" class="airline-code">KS</span></li>
+					</ul>
+				</div>
+				<div id="submit-button-area">
+					<button type="submit" disabled="true" id="submit-button" class="btn buttons"><span class="button-text">Submit</span></button>
+				</div>	
+			</div>
+
+		</div>
+
+		<!-- jQuery (necessary for Bootstrap's JavaScript Plugins) -->
+		<script src="node_modules/jquery/dist/jquery.js"></script>
+
+		<!-- Bootstrap js -->
+		<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+
+		<!-- Bootstrap-select js -->
+		<script src="node_modules/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
+
+		<!-- Your own js -->
+		<script src="scripts/scripts.js"></script>
+
+	</body>
+
+</html>

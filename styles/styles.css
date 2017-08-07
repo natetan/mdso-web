@@ -1,0 +1,268 @@
+body {
+	background-color: #f5f5f5;	
+	font-family: arial;
+}
+
+#left-side-content {
+	width: 75%;
+}
+
+#left-side-content, 
+#dropdown-content-left, 
+#dropdown-content-right {
+	float: left;
+}
+
+#right-side-content {
+	float: right;
+	width: 25%;
+}
+
+#top-banner {
+	background-color: #01426a;
+	padding: 2%;
+}
+
+#form-content, 
+#dropdown-content {
+	padding: 2%;
+}
+
+#form-content,
+#top-banner,
+#dropdown-content {
+	margin: auto;
+}
+
+#title-header {
+	font-size: 18px;
+	margin-right: 2%;
+}
+
+#title-header, 
+#updated, 
+.button-text, 
+.airline-code {
+	color: #ffffff;
+}
+
+#updated {
+	font-size: 16px;
+}
+
+button:disabled {
+	background-color: grey;
+}
+
+.buttons {
+	width: 200px;
+	height: 44px;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 0.2px;
+	background-color: #48850b;
+	text-align: center;
+	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.button-text {
+	width: 200px;
+	height: 16px;
+	font-size: 14px;
+	font-weight: bold;
+	letter-spacing: 0.3px;
+	text-align: center;
+}
+
+#cancel-button {
+	background-color: red;
+}
+
+#cancel-button:hover:enabled {
+	background-color: #8B0000;
+}
+
+#submit-button {
+	margin-top: 5%;
+	width: 90%;
+}
+
+#submit-button-area {
+	text-align: center;
+}
+
+.labels {
+	font-size: 14px;
+	font-weight: bold;
+	color: #01426a;
+}
+
+.form-sections {
+	margin-bottom: 1.5%;
+}
+
+.tab-item {
+	list-style-type: none;
+	background-color: #2774ae;
+	padding: 5%;
+}
+
+.tab-item:hover {
+	background-color: #01426a;
+	cursor: pointer;
+}
+
+.active {
+	background-color: #01426a;
+}
+
+.airline-code {
+	font-size: 36px;
+	letter-spacing: 0.6px;
+	margin-left: 30%;
+}
+
+.airline-code:hover {
+	color: white;
+	text-decoration: none;
+}
+
+#airline-list {
+	padding: 0;
+}
+
+.time-select, 
+#submit-button {
+	border-radius: 0;
+}
+
+#dropdown-content {
+	width: 90%;
+	margin-bottom: 2%;
+	/* THIS CAUSES ISSUES WITH THE DROPDOWN BEING CLIPPED
+	overflow: hidden;
+	*/
+}
+
+#dropdown-content-left {
+	margin-right: 10%;
+}
+
+#verify-button:hover:enabled, #submit-button:hover:enabled {
+	background-color: rgb(0, 100, 0);
+}
+
+/* Smartphones (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 320px) and (max-device-width : 767px) {
+
+	.airline-code, .buttons {
+		font-size: 18px;
+	}
+
+	#updated {
+		display: block;
+		font-size: 12px;
+	}
+
+	.buttons {
+		width: 100px;
+	}
+	
+	.form-sections {
+		margin-bottom: 5%;
+	}
+
+	#dropdown-content-left, #dropdown-content-right {
+		margin-bottom: 7%;
+	}
+
+	#form-content {
+		margin-top: 35%;
+	}
+}
+
+/* iPads (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
+
+	#updated {
+		display: block;
+	}
+
+	#dropdown-content-left, #dropdown-content-right {
+		margin-bottom: 4%;
+	}
+
+	#form-content {
+		margin-top: 5%;
+	}
+
+	.form-sections {
+		margin-bottom: 3%;
+	}
+}
+
+/* iPad pro (portrait and landscape) ----------- */
+@media only screen and (min-device-width : 1024px) and (max-device-width : 1366px) { 
+
+	.airline-code {
+		font-size: 28px;
+	}
+
+	#updated {
+		display: block;
+		font-size: 18px;
+	}
+
+	#dropdown-content {
+		margin-bottom: 5%;
+	}
+
+	.labels {
+		font-size: 16px;
+	}
+}
+
+/* Desktops and laptops ----------- */
+@media only screen and (min-width : 1224px) {
+
+	.airline-code {
+		font-size: 24px;
+	}
+
+	#updated {
+		font-size: 18px;
+	}
+
+	.labels {
+		font-size: 18px;
+	}
+
+	#dropdown-content, .form-sections {
+		margin-bottom: 3%;
+	}
+	
+	#dropdown-content-left {
+		width: 50%;
+	}
+}
+
+/* Large screens ----------- */
+@media only screen  and (min-width : 1824px) {
+
+	#updated {
+		font-size: 32px;
+	}
+
+	.labels {
+		font-size: 24px;
+	}
+
+	.text-area {
+		font-size: 20px;
+	}
+}
+
+
+
+
+
