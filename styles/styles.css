@@ -242,19 +242,29 @@ button:disabled {
 }
 
 .options-dropdown select {
-   background: white;
-   border: solid 1px #c8c9c7;
-   border-radius: 0;
-   font-size: 14px;
-   height: 35px;
-   width: 220px;
-   padding: 5px; /* If you add too much padding here, the options won't show in IE */
-   -webkit-appearance: none;
-   appearance: none;
+	background: white;
+	border: solid 1px #c8c9c7;
+	border-radius: 0;
+	font-size: 14px;
+	height: 35px;
+	width: 220px;
+	padding: 5px; /* If you add too much padding here, the options won't show in IE */
+	-webkit-appearance: none;
+	appearance: none;
 }
 
 .options-dropdown select:hover {
 	cursor: pointer;
+}
+
+.options-dropdown #date-dropdown {
+	background: url('../assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
+	background-size: 20px 20px;
+}
+
+.options-dropdown #template-dropdown {
+	background: url('../assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
+	background-size: 20px 15px;
 }
 
 .option-button {
