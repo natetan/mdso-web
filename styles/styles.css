@@ -1,21 +1,6 @@
 body {
-	background-color: #f5f5f5;	
+	background-color: #e9e9e9;	
 	font-family: arial;
-}
-
-#left-side-content {
-	width: 75%;
-}
-
-#left-side-content, 
-#dropdown-content-left, 
-#dropdown-content-right {
-	float: left;
-}
-
-#right-side-content {
-	float: right;
-	width: 25%;
 }
 
 #top-banner {
@@ -23,14 +8,20 @@ body {
 	padding: 2%;
 }
 
-#form-content, 
-#dropdown-content {
+#option-elements {
 	padding: 2%;
 }
 
+#form-content {
+	padding: 0px 2%;
+}
+
+#option-content {
+	padding: 2% 2% 0 2%;
+}
+
 #form-content,
-#top-banner,
-#dropdown-content {
+#top-banner {
 	margin: auto;
 }
 
@@ -56,22 +47,28 @@ button:disabled {
 
 .buttons {
 	width: 200px;
-	height: 44px;
 	font-size: 14px;
-	font-weight: bold;
 	letter-spacing: 0.2px;
 	background-color: #48850b;
 	text-align: center;
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
+	border-radius: 5px;
 }
 
 .button-text {
 	width: 200px;
 	height: 16px;
 	font-size: 14px;
-	font-weight: bold;
 	letter-spacing: 0.3px;
 	text-align: center;
+}
+
+.buttons, 
+.button-text, 
+.labels, 
+#airline-header span,
+#metrics-header span {
+	font-weight: bold;
 }
 
 #cancel-button {
@@ -83,17 +80,22 @@ button:disabled {
 }
 
 #submit-button {
-	margin-top: 5%;
-	width: 90%;
+	width: 50%;
+}
+
+#submit-button > .button-text {
+	font-size: 28px;
+	font-weight: lighter;
 }
 
 #submit-button-area {
 	text-align: center;
+	width: 25%;
+	float: right;
 }
 
 .labels {
 	font-size: 14px;
-	font-weight: bold;
 	color: #01426a;
 }
 
@@ -103,23 +105,27 @@ button:disabled {
 
 .tab-item {
 	list-style-type: none;
-	background-color: #2774ae;
-	padding: 5%;
+	display: inline;
+	padding: 1% 3%;
+	margin-right: 3%;
 }
 
 .tab-item:hover {
-	background-color: #01426a;
 	cursor: pointer;
 }
 
-.active {
-	background-color: #01426a;
+.active, .tab-item:hover {
+	border-bottom: 3px solid #01426a
+}
+
+.active > span, .tab-item:hover span {
+	color: #01426a;
 }
 
 .airline-code {
-	font-size: 36px;
+	font-size: 24px;
 	letter-spacing: 0.6px;
-	margin-left: 30%;
+	color: #2774ae;
 }
 
 .airline-code:hover {
@@ -127,29 +133,126 @@ button:disabled {
 	text-decoration: none;
 }
 
-#airline-list {
-	padding: 0;
+#airline-header {
+	color: #01426a;
+	text-align: left;
+	padding: 1% 2%;
+	width: 40%;
 }
 
-.time-select, 
-#submit-button {
+#airline-header > span{
+	font-size: 30px;
+}
+
+#airline-list {
+	padding: 0;
+	margin-top: 1%;
+	margin-left: 5%;
+	margin-bottom: 4%;
+	width: 70%;
+	float: left;
+}
+
+#action-button:hover:enabled, #submit-button:hover:enabled {
+	background-color: rgb(0, 100, 0);
+}
+
+#nav-bar {
+	background-color: #f5f5f5;
+	height: 80px;
+	box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.3);
+	padding: 1%;
+}
+
+#metrics-header span {
+	color: #01426a;
+	padding: 2%;
+	font-size: 18px;
+}
+
+.loader {
+	display: inline-block;
+	/* width and height to border and border-top ratio: 7.5*/
+    border: 2.67px solid #f3f3f3; /* Light grey */
+    border-top: 2.67px solid #3498db; /* Blue */
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 0.75s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+#metrics-data {
+	padding: 0% 2% 2% 2%;
+	margin-bottom: 5%;
+}
+
+.metrics-object {
+	width: 10%;
+	float: left;
+}
+
+.metric-type {
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.metric-percent {
+	color: #48850b;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.metric-goal {
+	font-size: 11px;
+	font-weight: 300;
+}
+
+.metric-type,
+.metric-goal {
+	color: #656565;
+}
+
+#option-content #updated-header {
+	font-size: 18px;
+	font-weight: bold;
+	margin-right: 2%;
+}
+
+#option-content #updated-date-time {
+	font-size: 14px;
+}
+
+#option-content #updated-header,
+#option-content #updated-date-time {
+	color: #01426a;
+}
+
+.option-item {
+	float: left;
+	width: 25%;
+}
+
+#option-elements {
+	height: 100px;
+}
+
+.option-button {
+	margin-top: 1%;
+}
+
+.option-button button {
+	height: 50px;
 	border-radius: 0;
 }
 
-#dropdown-content {
-	width: 90%;
-	margin-bottom: 2%;
-	/* THIS CAUSES ISSUES WITH THE DROPDOWN BEING CLIPPED
-	overflow: hidden;
-	*/
-}
-
-#dropdown-content-left {
-	margin-right: 10%;
-}
-
-#verify-button:hover:enabled, #submit-button:hover:enabled {
-	background-color: rgb(0, 100, 0);
+.option-button span {
+	font-weight: lighter;
+	font-size: 22px;
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -172,7 +275,7 @@ button:disabled {
 		margin-bottom: 5%;
 	}
 
-	#dropdown-content-left, #dropdown-content-right {
+	#dropdown-left, #dropdown-right {
 		margin-bottom: 7%;
 	}
 
@@ -188,7 +291,7 @@ button:disabled {
 		display: block;
 	}
 
-	#dropdown-content-left, #dropdown-content-right {
+	#dropdown-left, #dropdown-right {
 		margin-bottom: 4%;
 	}
 
@@ -213,7 +316,7 @@ button:disabled {
 		font-size: 18px;
 	}
 
-	#dropdown-content {
+	#option-elements {
 		margin-bottom: 5%;
 	}
 
@@ -237,12 +340,17 @@ button:disabled {
 		font-size: 18px;
 	}
 
-	#dropdown-content, .form-sections {
+	#option-elements, .form-sections {
 		margin-bottom: 3%;
 	}
-	
-	#dropdown-content-left {
-		width: 50%;
+
+	#nav-bar {
+		height: 100px;
+	}
+
+	#nav-bar,
+	#metrics-area {
+		height: 100px;
 	}
 }
 
@@ -260,6 +368,21 @@ button:disabled {
 	.text-area {
 		font-size: 20px;
 	}
+}
+
+.styled-select select {
+   background: white;
+   border: none;
+   font-size: 14px;
+   height: 40px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   width: 268px;
+   -webkit-appearance: none;
+   appearance: none;
+}
+
+.styled-select select:hover {
+	cursor: pointer;
 }
 
 

@@ -25,8 +25,8 @@
 
 		<div id="main">
 
-			<!-- Left side content start -->
-			<div id="left-side-content">
+			<!-- Main content start -->
+			<div id="main-content">
 			
 				<!-- Banner start -->
 				<div id="top-banner">
@@ -34,46 +34,191 @@
 					<!-- <span id="updated">Last Updated: Stuff</span> -->
 				</div>
 				<!-- Banner end -->
+				
+				<!-- Nav bar start -->
+				<div id="nav-bar">
+					<div id="airline-tabs">
+						<ul id="airline-list">
+							<li class="active tab-item"><span name="Alaska" class="airline-code">AS</span></li>
+							<li class="tab-item"><span name="Virgin" class="airline-code">VX</span></li>
+							<li class="tab-item"><span name="Horizon" class="airline-code">QX</span></li>
+							<li class="tab-item"><span name="SkyWest" class="airline-code">OO</span></li>
+							<li class="tab-item"><span name="PenAir" class="airline-code">KS</span></li>
+						</ul>
+					</div>
+					<div id="submit-button-area">
+						<button type="submit" disabled="true" id="submit-button" class="btn buttons"><span class="button-text">Submit</span></button>
+					</div>	
+				</div>
+				<!-- Nav bar end -->
 
-				<!-- Dropdown start -->
-				<div id="dropdown-content">
-					
-					<!-- Dropdown left start -->
-					<div id="dropdown-content-left">
-						<div>
-							<label for="template-dropdown" class="labels">Template</label>
-						</div>
-						<div>
-							<select name="template-dropdown" id="template-dropdown" class="selectpicker dropdown-items">
-							  <option value="0930">0930 AM</option>
-							  <option value="1130">1130 AM</option>
-							  <option value="0130">0130 PM</option>
-							  <option value="0330">0330 PM</option>
-							</select>
-						</div>
+				<div id="airline-header"><span>Alaska Airlines (AS)</span></div>
+
+				<!-- Metrics start -->
+				<div id="metrics-area">
+
+					<div id="metrics-header">
+						<span>Current Metrics</span>
+						<div class="loader"></div>
 					</div>
-					<!-- Dropdown left end -->
 					
-					<!-- Dropdown right start -->
-					<div id="dropdown-content-right">
-						<div>
-							<label for="date-dropdown" class="labels">Date</label>
+					<!-- Metrics data start -->
+					<div id="metrics-data">
+
+						<div class="metrics-object">
+							<span class="metric-type">DOT</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="87" class="metric-goal">(no goal)</span>
 						</div>
-						<div>
-							<select name="date-dropdown" id="date-dropdown" class="selectpicker dropdown-items">
-								<option value="date1">Date1</option>
-								<option value="date2">Date2</option>
-								<option value="date3">Date3</option>
-								<option value="date4">Date4</option>
-							</select>
-						</div>	
+
+						<div class="metrics-object">
+							<span class="metric-type">Proj. DOT</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="87" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">D0</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="80" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">A14</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="87" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">A30</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="99" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">Star D0</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="90" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">D5</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="0" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">D14</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="87.5" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">B0</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="60" class="metric-goal">(no goal)</span>
+						</div>
+
+						<div class="metrics-object">
+							<span class="metric-type">B14</span>
+							<br>
+							<span class="metric-percent">N/A</span>
+							<br>
+							<span data-goal="93" class="metric-goal">(no goal)</span>
+						</div>
+
 					</div>
-					<!-- Dropdown left end -->
+					<!-- Metrics data end -->
 
 				</div>
+				<!-- Metrics end -->
+				
+				<div>
+					<label for="template-dropdown" class="labels">Template</label>
+				</div>
+				<div class="styled-select slate">
+					<select>
+						<option>Here is the first option</option>
+						<option>The second option</option>
+						<option>The third option</option>
+					</select>
+				</div>
+				
+				<!-- Options start -->
+				<div id="option-content">
 
-				<!-- Dropdown end -->
-				<hr>
+					<div id="option-headers">
+						<span id="updated-header">Most Recently Submitted Report</span>
+						<span id="updated-date-time"></span>
+					</div>
+					
+					<!-- Dropdown start -->
+					<div id="option-elements">
+						
+						<!-- Dropdown left start -->
+						<div id="dropdown-left" class="option-item">
+							<div>
+								<label for="template-dropdown" class="labels">Template</label>
+							</div>
+							<div>
+								<select name="template-dropdown" id="template-dropdown" class="selectpicker dropdown-items">
+								  <option value="0930">0930 AM</option>
+								  <option value="1130">1130 AM</option>
+								  <option value="0130">0130 PM</option>
+								  <option value="0330">0330 PM</option>
+								</select>
+							</div>
+						</div>
+						<!-- Dropdown left end -->
+						
+						<!-- Dropdown right start -->
+						<div id="dropdown-right" class="option-item">
+							<div>
+								<label for="date-dropdown" class="labels">Date</label>
+							</div>
+							<div>
+								<select name="date-dropdown" id="date-dropdown" class="selectpicker dropdown-items">
+									<option value="date1">Date1</option>
+									<option value="date2">Date2</option>
+									<option value="date3">Date3</option>
+									<option value="date4">Date4</option>
+								</select>
+							</div>	
+						</div>
+						<!-- Dropdown left end -->
+						
+						<div class="option-item option-button">
+							<button type="submit" disabled="true" id="action-button" class="btn buttons"><span class="button-text">Save As New</span></button>
+						</div>
+						
+						<div class="option-item option-button">
+							<button type="submit" id="cancel-button" class="btn buttons"><span class="button-text">Cancel</span></button>
+						</div>
+					</div>
+
+					<!-- Dropdown end -->
+
+				</div>
+				<!-- Options end -->
+
 				<!-- Form content start -->
 				<div id="form-content">
 					<div class="form-group">
@@ -122,31 +267,13 @@
 							<label for="comments" class="labels">Comments</label>
 							<textarea rows="3" name="comments" class="form-control text-area"></textarea>
 						</div>
-						<button type="submit" disabled="true" id="verify-button" class="btn buttons"><span class="button-text">Verify</span></button>
-						<button type="submit" id="cancel-button" class="btn buttons"><span class="button-text">Cancel</span></button>
 					</div>
 				</div>
 				<!-- Form content end -->
 
 			</div>
 
-			<!-- Left side content end -->
-
-			
-			<div id="right-side-content">
-				<div id="airline-tabs">
-					<ul id="airline-list">
-						<li class="active tab-item"><span name="Alaska" class="airline-code">AS</span></li>
-						<li class="tab-item"><span name="Virgin" class="airline-code">VX</span></li>
-						<li class="tab-item"><span name="Horizon" class="airline-code">QX</span></li>
-						<li class="tab-item"><span name="SkyWest" class="airline-code">OO</span></li>
-						<li class="tab-item"><span name="PenAir" class="airline-code">KS</span></li>
-					</ul>
-				</div>
-				<div id="submit-button-area">
-					<button type="submit" disabled="true" id="submit-button" class="btn buttons"><span class="button-text">Submit</span></button>
-				</div>	
-			</div>
+			<!-- Main content end -->
 
 		</div>
 
