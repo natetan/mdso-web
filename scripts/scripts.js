@@ -43,7 +43,7 @@ $(document).ready(function () {
 
     getAirlineMetrics();
 
-    $('#verify-button').bind({
+    $('#positive-button').bind({
 
         // Verifies the fields
         click: verifyFields
@@ -66,7 +66,7 @@ $(document).ready(function () {
 
         // Enables button when there is text input
         input: function () {
-            $('#verify-button').prop('disabled', false);
+            $('#positive-button').prop('disabled', false);
         },
 
         // Prevents user typing in the character if it matches the regex
@@ -144,7 +144,7 @@ $(document).ready(function () {
 
     // Returns false when fields are not empty and user attempts to 
     function fieldsValidated() {
-        if (!fieldsAreEmpty() && $('#verify-button').is(':disabled') === false) {
+        if (!fieldsAreEmpty() && $('#positive-button').is(':disabled') === false) {
             alert('You have not validated your data yet.');
             return false;
         } else {
@@ -198,7 +198,7 @@ $(document).ready(function () {
             // This ensures that the data is pushed to the right tab, and prevents duplicates by replacing the old data
             finalJsonDocument['data'][tabIndex[airlineCode]] = jsonObject;
 
-            $('#verify-button').prop('disabled', true);
+            $('#positive-button').prop('disabled', true);
 
             $('.active .airline-code').css({
                 'color': '#48850b'
@@ -311,43 +311,44 @@ $(document).ready(function () {
 
     function switchMetrics(airlineCode) {
         var metrics = airlineMetrics[airlineCode];
-        var metricsArea = $('#metrics-data');
-        metricsArea.html('');
-        var count = 0;
-        for (metric in metrics) {
-            var $metricsObjectDiv = $(document.createElement('div'));
-            var $metricsTypeSpan = $(document.createElement('span'));
-            var $metricsPercentSpan = $(document.createElement('span'));
-            var $metricsGoalSpan = $(document.createElement('span'));
-            var $br = $(document.createElement('br'));
+        if (metrics !== null) {
+	        var metricsArea = $('#metrics-data');
+	        metricsArea.html('');
+	        var count = 0;
+	        for (metric in metrics) {
+	            var $metricsObjectDiv = $(document.createElement('div'));
+	            var $metricsTypeSpan = $(document.createElement('span'));
+	            var $metricsPercentSpan = $(document.createElement('span'));
+	            var $metricsGoalSpan = $(document.createElement('span'));
 
-            $metricsObjectDiv.addClass('metrics-object');
-            $metricsTypeSpan.addClass('metric-type');
-            $metricsPercentSpan.addClass('metric-percent');
-            $metricsGoalSpan.addClass('metric-goal');
+	            $metricsObjectDiv.addClass('metrics-object');
+	            $metricsTypeSpan.addClass('metric-type');
+	            $metricsPercentSpan.addClass('metric-percent');
+	            $metricsGoalSpan.addClass('metric-goal');
 
-            $metricsTypeSpan.html(Object.keys(metrics)[count]);
-            $metricsPercentSpan.html(metrics[metric]);
-            $metricsGoalSpan.data('goal', 87);
-            $metricsGoalSpan.html('(' + $metricsGoalSpan.data('goal') + '%)');
+	            $metricsTypeSpan.html(Object.keys(metrics)[count]);
+	            $metricsPercentSpan.html(metrics[metric]);
+	            $metricsGoalSpan.data('goal', 87);
+	            $metricsGoalSpan.html('(' + $metricsGoalSpan.data('goal') + '%)');
 
-            $metricsObjectDiv.append($metricsTypeSpan);
-            $metricsObjectDiv.append('<br>');
-            $metricsObjectDiv.append($metricsPercentSpan);
-            $metricsObjectDiv.append('<br>');
-            $metricsObjectDiv.append($metricsGoalSpan);
+	            $metricsObjectDiv.append($metricsTypeSpan);
+	            $metricsObjectDiv.append('<br>');
+	            $metricsObjectDiv.append($metricsPercentSpan);
+	            $metricsObjectDiv.append('<br>');
+	            $metricsObjectDiv.append($metricsGoalSpan);
 
-            metricsArea.append($metricsObjectDiv);
-            count++;
-        }
-        var metricObjs = $('.metrics-object');
-        var length = metricObjs.length;
-        var width = Math.round(100 / length);
-        metricObjs.css({
-        	'width': width + '%'
-        });
+	            metricsArea.append($metricsObjectDiv);
+	            count++;
+	        }
+	        var metricObjs = $('.metrics-object');
+	        var length = metricObjs.length;
+	        var width = Math.round(100 / length);
+	        metricObjs.css({
+	        	'width': width + '%'
+	        });
 
-        colorTheMetrics();
+	        colorTheMetrics();
+	    }
     }
 
     function colorTheMetrics() {

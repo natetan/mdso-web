@@ -52,7 +52,7 @@ button:disabled {
 	background-color: #48850b;
 	text-align: center;
 	box-shadow: 0 0 3px 0 rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
+	border-radius: 3px;
 }
 
 .button-text {
@@ -71,14 +71,6 @@ button:disabled {
 	font-weight: bold;
 }
 
-#cancel-button {
-	background-color: red;
-}
-
-#cancel-button:hover:enabled {
-	background-color: #8B0000;
-}
-
 #submit-button {
 	width: 50%;
 }
@@ -92,6 +84,22 @@ button:disabled {
 	text-align: center;
 	width: 25%;
 	float: right;
+}
+
+#positive-button:enabled {
+	background-color: #2774ae;
+}
+
+#positive-button:hover:enabled, #submit-button:hover:enabled {
+	background-color: #01426a;
+}
+
+#negative-button:enabled {
+	background-color: red;
+}
+
+#negative-button:hover:enabled {
+	background-color: #8B0000;
 }
 
 .labels {
@@ -151,10 +159,6 @@ button:disabled {
 	margin-bottom: 4%;
 	width: 70%;
 	float: left;
-}
-
-#action-button:hover:enabled, #submit-button:hover:enabled {
-	background-color: rgb(0, 100, 0);
 }
 
 #nav-bar {
@@ -253,17 +257,17 @@ button:disabled {
 	appearance: none;
 }
 
-.options-dropdown select:hover {
+.options-dropdown select:hover, .options-dropdown input:hover {
 	cursor: pointer;
 }
 
 .options-dropdown #template-dropdown {
-	background: url('../assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
+	background: url('../Assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 15px;
 }
 
 .options-dropdown #date-dropdown {
-	background: url('../assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
+	background: url('../Assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
@@ -329,16 +333,33 @@ button:disabled {
 /* iPads (portrait and landscape) ----------- */
 @media only screen and (min-device-width : 768px) and (max-device-width : 1024px) {
 
+	#submit-button {
+		width: 85%;
+	}
+
+	#airline-header {
+		width: 50%;
+	}
+
+	#metrics-area {
+		height: 100px;
+	}
+
+	#metrics-header {
+		margin-bottom: 1%;
+	}
 	#updated {
 		display: block;
 	}
 
-	#dropdown-left, #dropdown-right {
-		margin-bottom: 4%;
+	#option-content {
+		margin-bottom: 0;
 	}
 
-	#form-content {
-		margin-top: 5%;
+	.options-dropdown select, 
+	.options-dropdown input,
+	.buttons {
+		width: 150px;
 	}
 
 	.form-sections {
@@ -353,17 +374,31 @@ button:disabled {
 		font-size: 28px;
 	}
 
+	#metrics-area {
+		height: 100px;
+	}
+
+	#metrics-header {
+		margin-bottom: 1%;
+	}
+
 	#updated {
 		display: block;
 		font-size: 18px;
 	}
 
-	#option-elements {
-		margin-bottom: 5%;
+	#option-content {
+		margin-bottom: 2%;
 	}
 
 	.labels {
 		font-size: 16px;
+	}
+
+	.options-dropdown select, 
+	.options-dropdown input,
+	.buttons {
+		width: 175px;
 	}
 }
 
@@ -372,6 +407,15 @@ button:disabled {
 
 	.airline-code {
 		font-size: 24px;
+	}
+
+	.tab-item {
+		margin-right: 5%;
+	}
+
+	#submit-button {
+		margin-top: 1%;
+		width: 90%;
 	}
 
 	#updated {
@@ -390,14 +434,59 @@ button:disabled {
 		height: 100px;
 	}
 
-	#nav-bar,
-	#metrics-area {
+	#nav-bar {
 		height: 100px;
+	}
+
+	#metrics-area {
+		height: 125px;
+	}
+
+	.metric-type {
+		font-size: 14px;
+	}
+
+	.metric-percent {
+		font-size: 20px;
+	}
+
+	.metric-goal {
+		font-size: 14px;
+	}
+
+	.options-dropdown select, 
+	.options-dropdown input,
+	.buttons {
+		width: 250px;
 	}
 }
 
 /* Large screens ----------- */
 @media only screen and (min-width : 1824px) {
+	
+	#top-banner span {
+		font-size: 28px;
+	}
+
+	#airline-header span {
+		font-size: 48px;
+	}
+
+	#metrics-header span {
+		font-size: 24px;
+	}
+
+	.metric-type {
+		font-size: 18px;
+	}
+
+	.metric-percent {
+		font-size: 24px;
+	}
+
+	.metric-goal {
+		font-size: 18px;
+	}
 
 	#updated {
 		font-size: 32px;
@@ -409,6 +498,24 @@ button:disabled {
 
 	.text-area {
 		font-size: 20px;
+	}
+
+	#nav-bar {
+		height: 131px;
+	}
+
+	#submit-button {
+		margin-top: 2%;
+	}
+
+	.options-dropdown select, 
+	.options-dropdown input,
+	.buttons {
+		width: 375px;
+	}
+
+	.option-button {
+		margin-top: 1%;
 	}
 }
 
