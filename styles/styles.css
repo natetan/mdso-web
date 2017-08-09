@@ -241,6 +241,22 @@ button:disabled {
 	height: 100px;
 }
 
+.options-dropdown select {
+   background: white;
+   border: solid 1px #c8c9c7;
+   border-radius: 0;
+   font-size: 14px;
+   height: 35px;
+   width: 220px;
+   padding: 5px; /* If you add too much padding here, the options won't show in IE */
+   -webkit-appearance: none;
+   appearance: none;
+}
+
+.options-dropdown select:hover {
+	cursor: pointer;
+}
+
 .option-button {
 	margin-top: 1%;
 }
@@ -355,7 +371,7 @@ button:disabled {
 }
 
 /* Large screens ----------- */
-@media only screen  and (min-width : 1824px) {
+@media only screen and (min-width : 1824px) {
 
 	#updated {
 		font-size: 32px;
@@ -368,21 +384,6 @@ button:disabled {
 	.text-area {
 		font-size: 20px;
 	}
-}
-
-.styled-select select {
-   background: white;
-   border: none;
-   font-size: 14px;
-   height: 40px;
-   padding: 5px; /* If you add too much padding here, the options won't show in IE */
-   width: 268px;
-   -webkit-appearance: none;
-   appearance: none;
-}
-
-.styled-select select:hover {
-	cursor: pointer;
 }
 
 
