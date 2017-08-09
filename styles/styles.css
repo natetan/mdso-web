@@ -241,7 +241,7 @@ button:disabled {
 	height: 100px;
 }
 
-.options-dropdown select {
+.options-dropdown select, .options-dropdown input {
 	background: white;
 	border: solid 1px #c8c9c7;
 	border-radius: 0;
@@ -257,14 +257,30 @@ button:disabled {
 	cursor: pointer;
 }
 
+.options-dropdown #template-dropdown {
+	background: url('../assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
+	background-size: 20px 15px;
+}
+
 .options-dropdown #date-dropdown {
 	background: url('../assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
-.options-dropdown #template-dropdown {
-	background: url('../assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
-	background-size: 20px 15px;
+.options-dropdown #date-dropdown::-webkit-inner-spin-button {
+	display: none;
+}
+
+.options-dropdown #date-dropdown::-webkit-calendar-picker-indicator  {
+	opacity: 0;
+}
+
+#date-dropdown::-webkit-inner-spin-button {
+  display: none;
+}
+
+#date-dropdown::-webkit-calendar-picker-indicator {
+  opacity: 0;
 }
 
 .option-button {
