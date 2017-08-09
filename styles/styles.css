@@ -73,10 +73,11 @@ button:disabled {
 
 #submit-button {
 	width: 50%;
+	height: 40px;
 }
 
 #submit-button > .button-text {
-	font-size: 28px;
+	font-size: 20px;
 	font-weight: lighter;
 }
 
@@ -84,6 +85,7 @@ button:disabled {
 	text-align: center;
 	width: 25%;
 	float: right;
+	margin-top: 1%;
 }
 
 #positive-button:enabled {
@@ -288,17 +290,18 @@ button:disabled {
 }
 
 .option-button {
-	margin-top: 1%;
+	margin-top: 2.3%;
 }
 
 .option-button button {
-	height: 50px;
+	height: 35px;
 	border-radius: 0;
 }
 
 .option-button span {
 	font-weight: lighter;
-	font-size: 22px;
+	font-size: 18px;
+	letter-spacing: 0.8px;
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -362,6 +365,10 @@ button:disabled {
 		width: 150px;
 	}
 
+	.option-button button {
+		margin-top: 2.5%;
+	}
+
 	.form-sections {
 		margin-bottom: 3%;
 	}
@@ -400,6 +407,50 @@ button:disabled {
 	.buttons {
 		width: 175px;
 	}
+
+	.option-button button {
+		margin-top: 2%;
+	}
+}
+
+/* Smaller Screen */
+@media only screen and (min-width: 768px) {
+	#submit-button {
+		width: 85%;
+	}
+
+	#airline-header {
+		width: 50%;
+	}
+
+	#metrics-area {
+		height: 100px;
+	}
+
+	#metrics-header {
+		margin-bottom: 1%;
+	}
+	#updated {
+		display: block;
+	}
+
+	#option-content {
+		margin-bottom: 0;
+	}
+
+	.options-dropdown select, 
+	.options-dropdown input,
+	.buttons {
+		width: 150px;
+	}
+
+	.option-button button {
+		margin-top: 2.5%;
+	}
+
+	.form-sections {
+		margin-bottom: 3%;
+	}
 }
 
 /* Desktops and laptops ----------- */
@@ -415,7 +466,7 @@ button:disabled {
 
 	#submit-button {
 		margin-top: 1%;
-		width: 90%;
+		width: 50%;
 	}
 
 	#updated {
@@ -504,8 +555,8 @@ button:disabled {
 		height: 131px;
 	}
 
-	#submit-button {
-		margin-top: 2%;
+	#submit-button-area {
+		margin-top: 1%;
 	}
 
 	.options-dropdown select, 
@@ -515,7 +566,7 @@ button:disabled {
 	}
 
 	.option-button {
-		margin-top: 1%;
+		margin-top: 1.5%;
 	}
 }
 
