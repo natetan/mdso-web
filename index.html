@@ -36,11 +36,26 @@
 				<div id="nav-bar">
 					<div id="airline-tabs">
 						<ul id="airline-list">
-							<li class="active tab-item"><span name="Alaska" class="airline-code">AS</span></li>
-							<li class="tab-item"><span name="Virgin" class="airline-code">VX</span></li>
-							<li class="tab-item"><span name="Horizon" class="airline-code">QX</span></li>
-							<li class="tab-item"><span name="SkyWest" class="airline-code">OO</span></li>
-							<li class="tab-item"><span name="PenAir" class="airline-code">KS</span></li>
+							<li class="active tab-item">
+								<span name="Alaska Airlines" class="airline-code">AS</span>
+								<div id="check-mark-AS" class="check-mark-holder"></div>
+							</li>
+							<li class="tab-item">
+								<span name="Virgin America" class="airline-code">VX</span>
+								<div id="check-mark-VX" class="check-mark-holder"></div>
+							</li>
+							<li class="tab-item">
+								<span name="Horizon Airlines" class="airline-code">QX</span>
+								<div id="check-mark-QX" class="check-mark-holder"></div>
+							</li>
+							<li class="tab-item">
+								<span name="SkyWest Airlines" class="airline-code">OO</span>
+								<div id="check-mark-OO" class="check-mark-holder"></div>
+							</li>
+							<li class="tab-item">
+								<span name="PenAir" class="airline-code">KS</span>
+								<div id="check-mark-KS" class="check-mark-holder"></div>
+							</li>
 						</ul>
 					</div>
 					<div id="submit-button-area">
@@ -154,6 +169,7 @@
 					<div id="option-headers">
 						<span id="updated-header">Most Recently Submitted Report</span>
 						<span id="updated-date-time"></span>
+						<div class="loader"></div>
 					</div>
 					
 					<!-- Dropdown start -->
@@ -195,11 +211,11 @@
 						<!-- Dropdown left end -->
 						
 						<div class="option-item option-button">
-							<button type="submit" disabled="true" id="positive-button" class="btn buttons"><span class="button-text">UPDATE</span></button>
+							<button type="submit" id="positive-button" class="btn buttons"><span class="button-text">CREATE NEW</span></button>
 						</div>
 						
 						<div class="option-item option-button">
-							<button type="submit" id="negative-button" class="btn buttons"><span class="button-text">CANCEL</span></button>
+							<button disabled="true" type="submit" id="negative-button" class="btn buttons"><span class="button-text">CANCEL</span></button>
 						</div>
 					</div>
 

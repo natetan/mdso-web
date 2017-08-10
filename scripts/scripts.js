@@ -1,12 +1,20 @@
 $(document).ready(function () {
 
     // Global Variable representing the final document
-    var finalJsonDocument = {
+    var FINAL_JSON_DOCUMENT = {
         'data': []
     };
 
+    var AIRLINE_MANUAL_DATA = {
+    	'AS': null,
+        'VX': null,
+        'QX': null,
+        'OO': null,
+        'KS': null
+    };
+
     // Keeps track of the array index for the JSON
-    var tabIndex = {
+    var TAB_INDEX = {
         'AS': 0,
         'VX': 1,
         'QX': 2,
@@ -15,7 +23,7 @@ $(document).ready(function () {
     };
 
     // Keeps track of verified forms
-    var airlinesVerified = {
+    var AIRLINES_VERIFIED = {
         'AS': false,
         'VX': false,
         'QX': false,
@@ -24,7 +32,7 @@ $(document).ready(function () {
     };
 
     // Fill in the data when a new tab is clicked
-    var savedVerifiedData = {
+    var SAVED_VERIFIED_DATA = {
         'AS': null,
         'VX': null,
         'QX': null,
@@ -33,7 +41,7 @@ $(document).ready(function () {
     };
 
     // Airline Metrics
-    var airlineMetrics = {
+    var AIRLINE_METRICS = {
         'AS': null,
         'VX': null,
         'QX': null,
@@ -41,12 +49,43 @@ $(document).ready(function () {
         'KS': null
     }
 
+    var AIRLINE_TIMESTAMP = {
+    	'AS': null,
+        'VX': null,
+        'QX': null,
+        'OO': null,
+        'KS': null
+    }
+
+    // Keeps track of the state of the positive button and fields
+    var IN_CREATE_STATE = true;
+
+    // Change to true to post to database
+    // Otherwise, log posted document to console
+    var REAL_POST = true;
+
+    var USE_LIVE_DATA = true;
+
     getAirlineMetrics();
+    getMostRecentDocument();
+    disableFields();
+
+    // Sets the date to today on start
+    document.getElementById('date-dropdown').valueAsDate = new Date();
 
     $('#positive-button').bind({
 
         // Verifies the fields
         click: verifyFields
+    });
+
+    $('#negative-button').on('click', function() {
+    	$('#positive-button span').html('CREATE NEW');
+    	$('#positive-button').prop('disabled', false);
+		IN_CREATE_STATE = true;
+		$('textarea').prop('disabled', true);
+		$(this).prop('disabled', true);
+		fillInFields($('.active span').html());
     });
 
     // Submit button
@@ -112,9 +151,14 @@ $(document).ready(function () {
         }
     });
 
+    // Disables the textarea fields
+    function disableFields() {
+    	$('textarea').prop('disabled', true);
+    }
+
     // Updates which tab gets set to active (highlighted)
     function updateActive() {
-        if (fieldsValidated()) {
+        if (IN_CREATE_STATE) {
             var tabs = $(this).siblings();
             tabs.removeClass('active');
             $(this).addClass('active');
@@ -123,16 +167,26 @@ $(document).ready(function () {
             var currentSpan = $('.active span');
             var airlineCode = currentSpan.html();
             var airlineName = currentSpan.attr('name');
-            $('#airline-header span').html(airlineName + ' Airlines (' + airlineCode + ')');
+            $('#airline-header span').html(airlineName + ' (' + airlineCode + ')');
 
             switchMetrics(airlineCode);
+            switchTimeStamp(airlineCode);
             fillInFields(airlineCode);
+        } else {
+        	alert('You are in edit mode. Cannot perform action');
         }
     }
 
     // Fills in the fields with the data they're verified with
     function fillInFields(airlineCode) {
-        var fields = savedVerifiedData[airlineCode];
+    	var fields = null;
+
+    	if (USE_LIVE_DATA) {
+    		fields = AIRLINE_MANUAL_DATA[airlineCode];
+    	} else {
+        	fields = SAVED_VERIFIED_DATA[airlineCode];
+        }
+
         if (fields != null) {
             for (var i = 0; i < fields.length; i++) {
                 $('textarea[name=' + fields[i]['FieldKey'] + ']').prop('value', fields[i]['FieldValue']);
@@ -140,6 +194,7 @@ $(document).ready(function () {
         } else {
             $('textarea').prop('value', '');
         }
+        $('#option-headers .loader').removeClass('loader');
     }
 
     // Returns false when fields are not empty and user attempts to 
@@ -164,63 +219,78 @@ $(document).ready(function () {
 
     // Checks if fields are verified
     function verifyFields() {
-        console.log('Verify was clicked');
-        var textareas = $('textarea');
-        var date = new Date();
-        var airlineCode = $('.active span').html();
-        var jsonObject = {
-            'Status': 0,
-            'AirlineCode': airlineCode,
-            'Timestamp': date.toISOString().substring(0, 10) + ' ' + date.toLocaleTimeString(),
-            'UserId': 'BATCH',
-            'ManualDataList': []
-        };
-        var errorMessage = 'Fields not verified:\n\n';
-        var isValid = true;
-        for (var i = 0; i < textareas.length; i++) {
-            var $this = $(textareas[i]);
-            var name = $this.attr('name');
-            var value = $this.val();
-            if (value === null || value === '' || value === undefined) {
-                errorMessage += name + '\n';
-                isValid = false;
-            }
-            var newJsonField = {};
-            newJsonField['FieldName'] = $this.parent().find('label').html();
-            newJsonField['FieldKey'] = name;
-            newJsonField['FieldValue'] = value;
-            jsonObject['ManualDataList'].push(newJsonField);
-        }
-        if (!isValid) {
-            alert('Not all fields are complete');
-        } else {
+    	var textareas = $('textarea');
 
-            // This ensures that the data is pushed to the right tab, and prevents duplicates by replacing the old data
-            finalJsonDocument['data'][tabIndex[airlineCode]] = jsonObject;
+    	// If the create button is enabled, textfields should still be disabled
+    	if (IN_CREATE_STATE) {
+    		$(this).prop('disabled', true);
+    		$('#positive-button span').html('SAVE');
+    		IN_CREATE_STATE = false;
+    		textareas.prop('disabled', false);
+    		console.log('verify clicked');
+    		$('#negative-button').prop('disabled', false);
+    	} else {
+    		$('#positive-button span').html('CREATE NEW');
+    		IN_CREATE_STATE = true;
+    		textareas.prop('disabled', true);
 
-            $('#positive-button').prop('disabled', true);
+	        var date = new Date();
+	        var airlineCode = $('.active span').html();
+	        var jsonObject = {
+	            'Status': 0,
+	            'AirlineCode': airlineCode,
+	            'Timestamp': getDate(),
+	            'UserId': 'BATCH',
+	            'ManualDataList': []
+	        };
+	        var errorMessage = 'Fields not verified:\n\n';
+	        var isValid = true;
+	        for (var i = 0; i < textareas.length; i++) {
+	            var $this = $(textareas[i]);
+	            var name = $this.attr('name');
+	            var value = $this.val();
+	            if (value === null || value === '' || value === undefined) {
+	                errorMessage += name + '\n';
+	                isValid = false;
+	            }
+	            AIRLINES_VERIFIED[airlineCode] = true;
+	            var newJsonField = {};
+	            newJsonField['FieldName'] = $this.parent().find('label').html();
+	            newJsonField['FieldKey'] = name;
+	            newJsonField['FieldValue'] = value;
+	            jsonObject['ManualDataList'].push(newJsonField);
+	        }
+	        // if (!isValid) {
+	        //     alert('Not all fields are complete');
+	        // } else {
 
-            $('.active .airline-code').css({
-                'color': '#48850b'
-            });
+	            // This ensures that the data is pushed to the right tab, and prevents duplicates by replacing the old data
+	            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
 
-            savedVerifiedData[airlineCode] = jsonObject['ManualDataList'];
-            console.log(JSON.stringify(savedVerifiedData, null, ' '));
+	            $('.active div').addClass('check-mark-image');
 
-            // Enables submit button if everything is verified
-            airlinesVerified[airlineCode] = true;
-            if (everythingIsVerified()) {
-                $('#submit-button').prop('disabled', false);
-            }
-            // console.log('AirlineStatus: ' + JSON.stringify(jsonObject, null, ' '));
-        }
+	            if (USE_LIVE_DATA) {
+	            	AIRLINE_MANUAL_DATA[airlineCode] = jsonObject['ManualDataList'];
+	            } else {
+	            	SAVED_VERIFIED_DATA[airlineCode] = jsonObject['ManualDataList'];
+	            }
+
+	            // console.log(JSON.stringify(SAVED_VERIFIED_DATA, null, ' '));
+
+	            // Enables submit button if everything is verified
+	            // if (everythingIsVerified()) {
+	                $('#submit-button').prop('disabled', false);
+	            // }
+	            // console.log('AirlineStatus: ' + JSON.stringify(jsonObject, null, ' '));
+	        // }
+	    }
     }
 
     // Checks if every airline is verified
     function everythingIsVerified() {
         var verified = true;
-        for (var airline in airlinesVerified) {
-            if (airlinesVerified[airline] === false) {
+        for (var airline in AIRLINES_VERIFIED) {
+            if (AIRLINES_VERIFIED[airline] === false) {
                 verified = false;
             }
         }
@@ -251,22 +321,35 @@ $(document).ready(function () {
     }
 
     // Returns a string representation of the date in the format [day month year hh:mm:ss AM/PM]
-    function getDate() {
-        var date = new Date();
-        return date.toDateString() + ' ' + date.toLocaleTimeString();
+    function getDate(milliseconds = null) {
+    	var formattedDate;
+    	if (milliseconds == null) {
+        	formattedDate = new Date();
+        } else {
+        	formattedDate = new Date(0);
+        	formattedDate.setUTCSeconds(milliseconds);
+        }
+        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString();
     }
 
-    function getDocuments() {
-        request('/RestClient/GetAllDocuments', getAllDocuments);
-    }
-
-    function getAirlineMetrics() {
-        request('/RestClient/getAirlineMetrics', fillMetrics);
-    }
-
+    // Submits the document as a whole to the database
     function submit() {
-        console.log(JSON.stringify(finalJsonDocument, null, ' '));
-        // postDocument(finalJsonDocument);
+    	if (REAL_POST) {
+    		postDocument(FINAL_JSON_DOCUMENT);
+    		removeCheckMarks();
+    	} else {
+	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
+	        alert('Posted document is in the console');
+	    }
+        $(this).prop('disabled', true);
+    }
+
+    function removeCheckMarks() {
+    	for (var airline in AIRLINES_VERIFIED) {
+        	AIRLINES_VERIFIED[airline] = false;
+        	var id = '#check-mark-' + airline;
+			$(id).removeClass('check-mark-image');
+        }
     }
 
     // Makes a request to the url and performs a callback function
@@ -287,30 +370,13 @@ $(document).ready(function () {
             });
     }
 
-    function fillMetrics(response) {
-        if (response !== null) {
-            var metrics = $.parseJSON(response);
-            for (var i = 0; i < metrics.length; i++) {
-                var metricArray = {};
-                var metric = metrics[i];
-                var airlineCode = metric['Airline'].trim(); // OO
-                metricArray['A0'] = metric['A0'];
-                metricArray['A4'] = metric['A4'];
-                metricArray['A14'] = metric['A14'];
-                metricArray['A30'] = metric['A30'];
-                metricArray['D0'] = metric['D0'];
-                metricArray['D14'] = metric['D14'];
-                metricArray['B0'] = metric['B0'];
-                metricArray['B4'] = metric['B4'];
-                metricArray['B14'] = metric['B14'];
-                airlineMetrics[airlineCode] = metricArray;
-            }
-        }
-        switchMetrics('AS');
+    function switchTimeStamp(airlineCode) {
+    	$('#updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
     }
 
+    // Switches the metrics based on the airlineCode provided
     function switchMetrics(airlineCode) {
-        var metrics = airlineMetrics[airlineCode];
+        var metrics = AIRLINE_METRICS[airlineCode];
         if (metrics !== null) {
 	        var metricsArea = $('#metrics-data');
 	        metricsArea.html('');
@@ -351,6 +417,7 @@ $(document).ready(function () {
 	    }
     }
 
+    // Colors the metrics green or red depending on the goal status
     function colorTheMetrics() {
         var metricObjects = $('#metrics-data .metrics-object');
         for (var i = 0; i < metricObjects.length; i++) {
@@ -373,8 +440,35 @@ $(document).ready(function () {
                 });
             }
         }
-        $('.loader').removeClass('loader');
+        $('#metrics-header .loader').removeClass('loader');
     }
+
+    /*************************************************************************************
+    *																					 *
+    * HTTP REQUESTS        													             *
+    *																					 *
+    *************************************************************************************/
+
+    // Gets all the documents in the database
+    function getDocuments() {
+        request('/RestClient/GetAllDocuments', getAllDocuments);
+    }
+
+    // Gets the most recent document
+    function getMostRecentDocument() {
+    	request('/RestClient/GetAllDocuments', fillManualData);
+    }
+
+    // Gets the airline metrics
+    function getAirlineMetrics() {
+        request('/RestClient/getAirlineMetrics', fillMetrics);
+    }
+
+    /*************************************************************************************
+    *																					 *
+    * HTTP REQUEST CALLBACKS        													 *
+    *																					 *
+    *************************************************************************************/
 
     // Gets all the documents from the database
     function getAllDocuments(response) {
@@ -382,6 +476,64 @@ $(document).ready(function () {
             alert('Get data is logged into the console.');
             console.log('Response: ' + response);
         }
+    }
+
+    // Gets the most recent document
+    function fillManualData(response) {
+    	if (response != null) {
+    		var result = $.parseJSON(response);
+    		var latestDocument = result[result.length - 1];
+    		var airlines = latestDocument['data'];
+    		var milliseconds = latestDocument['_ts'];
+    		$('#updated-date-time').html(getDate(milliseconds))
+    		FINAL_JSON_DOCUMENT['data'] = airlines;
+    		for (var i = 0; i < airlines.length; i++) {
+    			var currentAirline = airlines[i];
+    			var airlineCode = currentAirline['AirlineCode'];
+
+    			AIRLINE_TIMESTAMP[airlineCode] = currentAirline['Timestamp'];
+    			AIRLINE_MANUAL_DATA[airlineCode] = currentAirline['ManualDataList'];
+
+    			// var boolString = currentAirline['Verified'];
+    			// var bool = false;
+    			// if (boolString == 'True') {
+    			// 	bool = true;
+    			// }
+    			// AIRLINES_VERIFIED[airlineCode] = bool;
+    		}
+    	}
+    	// for (airline in AIRLINES_VERIFIED) {
+    	// 	console.log(AIRLINES_VERIFIED[airline]);
+    	// 	if (AIRLINES_VERIFIED[airline]) {
+    	// 		var id = '#check-mark-' + airline;
+    	// 		$(id).addClass('check-mark-image');
+    	// 	}
+    	// }
+    	switchTimeStamp('AS');
+    	fillInFields('AS');
+    }
+
+    // Fills in the global metrics object
+    function fillMetrics(response) {
+        if (response !== null) {
+            var metrics = $.parseJSON(response);
+            for (var i = 0; i < metrics.length; i++) {
+                var metricArray = {};
+                var metric = metrics[i];
+                var airlineCode = metric['Airline'].trim(); // OO
+                metricArray['A0'] = metric['A0'];
+                metricArray['A4'] = metric['A4'];
+                metricArray['A14'] = metric['A14'];
+                metricArray['A30'] = metric['A30'];
+                metricArray['D0'] = metric['D0'];
+                metricArray['D14'] = metric['D14'];
+                metricArray['B0'] = metric['B0'];
+                metricArray['B4'] = metric['B4'];
+                metricArray['B14'] = metric['B14'];
+                AIRLINE_METRICS[airlineCode] = metricArray;
+            }
+        }
+        switchMetrics('AS');
     }
 
     // Posts a new document into the database

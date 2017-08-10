@@ -31,14 +31,9 @@ body {
 }
 
 #title-header, 
-#updated, 
 .button-text, 
 .airline-code {
 	color: #ffffff;
-}
-
-#updated {
-	font-size: 16px;
 }
 
 button:disabled {
@@ -76,6 +71,10 @@ button:disabled {
 	height: 40px;
 }
 
+#submit-button:hover:enabled {
+	background-color: rgb(0, 100, 0);
+}
+
 #submit-button > .button-text {
 	font-size: 20px;
 	font-weight: lighter;
@@ -92,7 +91,7 @@ button:disabled {
 	background-color: #2774ae;
 }
 
-#positive-button:hover:enabled, #submit-button:hover:enabled {
+#positive-button:hover:enabled {
 	background-color: #01426a;
 }
 
@@ -130,6 +129,16 @@ button:disabled {
 
 .active > span, .tab-item:hover span {
 	color: #01426a;
+}
+
+.check-mark-holder {
+	width: 12px;
+	height: 9px;
+	display: inline-block;
+}
+
+.check-mark-image {
+	background: url('../Assets/check_mark.png') no-repeat;
 }
 
 .airline-code {
@@ -226,11 +235,15 @@ button:disabled {
 #option-content #updated-header {
 	font-size: 18px;
 	font-weight: bold;
-	margin-right: 2%;
 }
 
 #option-content #updated-date-time {
 	font-size: 14px;
+}
+
+#option-content #updated-header,
+#updated-date-time {
+	margin-right: 2%;
 }
 
 #option-content #updated-header,
@@ -311,11 +324,6 @@ button:disabled {
 		font-size: 18px;
 	}
 
-	#updated {
-		display: block;
-		font-size: 12px;
-	}
-
 	.buttons {
 		width: 100px;
 	}
@@ -351,9 +359,6 @@ button:disabled {
 	#metrics-header {
 		margin-bottom: 1%;
 	}
-	#updated {
-		display: block;
-	}
 
 	#option-content {
 		margin-bottom: 0;
@@ -387,11 +392,6 @@ button:disabled {
 
 	#metrics-header {
 		margin-bottom: 1%;
-	}
-
-	#updated {
-		display: block;
-		font-size: 18px;
 	}
 
 	#option-content {
@@ -430,9 +430,6 @@ button:disabled {
 	#metrics-header {
 		margin-bottom: 1%;
 	}
-	#updated {
-		display: block;
-	}
 
 	#option-content {
 		margin-bottom: 0;
@@ -467,10 +464,6 @@ button:disabled {
 	#submit-button {
 		margin-top: 1%;
 		width: 50%;
-	}
-
-	#updated {
-		font-size: 18px;
 	}
 
 	.labels {
@@ -547,10 +540,6 @@ button:disabled {
 
 	.metric-goal {
 		font-size: 18px;
-	}
-
-	#updated {
-		font-size: 32px;
 	}
 
 	.labels {
