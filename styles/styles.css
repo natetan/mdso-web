@@ -510,6 +510,16 @@ button:disabled {
 	.buttons {
 		width: 250px;
 	}
+
+	.option-button {
+		margin-top: 1.67%;
+	}
+}
+
+@media only screen and (min-width: 1444px) and (max-width: 1823px) {
+	.option-button {
+		margin-top: 1%;
+	}
 }
 
 /* Large screens ----------- */
