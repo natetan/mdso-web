@@ -110,7 +110,6 @@ $(document).ready(function () {
 
         // Prevents user typing in the character if it matches the regex
         keypress: function (e) {
-            console.log('key press');
             e = e || window.event;
             var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
             var charStr = String.fromCharCode(charCode);
@@ -220,17 +219,16 @@ $(document).ready(function () {
     // Checks if fields are verified
     function verifyFields() {
     	var textareas = $('textarea');
-
     	// If the create button is enabled, textfields should still be disabled
     	if (IN_CREATE_STATE) {
     		$(this).prop('disabled', true);
     		$('#positive-button span').html('SAVE');
     		IN_CREATE_STATE = false;
     		textareas.prop('disabled', false);
-    		console.log('verify clicked');
     		$('#negative-button').prop('disabled', false);
     	} else {
     		$('#positive-button span').html('CREATE NEW');
+    		$('#negative-button').prop('disabled', true);
     		IN_CREATE_STATE = true;
     		textareas.prop('disabled', true);
 
