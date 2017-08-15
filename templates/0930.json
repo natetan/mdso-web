@@ -1,261 +1,259 @@
-[
-    {
-        "data": [
-            {
-                "Status": 0,
-                "AirlineCode": "AS",
-                "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
-                "UserId": "BATCH",
-                "Template": 0930,
-                "ManualDataList": [
-                    {
-                        "FieldName": "IT System Status",
-                        "FieldKey": "itss",
-                        "FieldValue": "testing temp"
-                    },
-                    {
-                        "FieldName": "Cancellations (XLS)",
-                        "FieldKey": "cancellations",
-                        "FieldValue": "0"
-                    },
-                    {
-                        "FieldName": "Delays",
-                        "FieldKey": "delays",
-                        "FieldValue": "idk"
-                    },
-                    {
-                        "FieldName": "Weather (WX)",
-                        "FieldKey": "weather",
-                        "FieldValue": "smoke from canada too op pls nerf"
-                    },
-                    {
-                        "FieldName": "Diversions",
-                        "FieldKey": "diversions",
-                        "FieldValue": "idk"
-                    },
-                    {
-                        "FieldName": "Air Traffic Control (ATC)",
-                        "FieldKey": "atc",
-                        "FieldValue": "something something winds"
-                    },
-                    {
-                        "FieldName": "OTS",
-                        "FieldKey": "ots",
-                        "FieldValue": "stuff and such!"
-                    },
-                    {
-                        "FieldName": "Spares",
-                        "FieldKey": "spares",
-                        "FieldValue": "...tires?"
-                    },
-                    {
-                        "FieldName": "Comments",
-                        "FieldKey": "comments",
-                        "FieldValue": "AS comments"
-                    }
-                ]
-            },
-            {
-                "Status": 0,
-                "AirlineCode": "VX",
-                "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
-                "UserId": "BATCH",
-                "Template": 0930,
-                "ManualDataList": [
-                    {
-                        "FieldName": "IT System Status",
-                        "FieldKey": "itss",
-                        "FieldValue": "VX stuff and such and yeah!!!! :D posted on the 14th with a different time stamp. "
-                    },
-                    {
-                        "FieldName": "Cancellations (XLS)",
-                        "FieldKey": "cancellations",
-                        "FieldValue": "fsdjfdshjfsdahj verified!!"
-                    },
-                    {
-                        "FieldName": "OTS",
-                        "FieldKey": "ots",
-                        "FieldValue": "hjk"
-                    },
-                    {
-                        "FieldName": "Delays",
-                        "FieldKey": "delays",
-                        "FieldValue": "hjk"
-                    },
-                    {
-                        "FieldName": "Diversions",
-                        "FieldKey": "diversions",
-                        "FieldValue": "hjk"
-                    },
-                    {
-                        "FieldName": "Weather (WX)",
-                        "FieldKey": "weather",
-                        "FieldValue": "hkj"
-                    },
-                    {
-                        "FieldName": "Air Traffic Control (ATC)",
-                        "FieldKey": "atc",
-                        "FieldValue": "hjk"
-                    },
-                    {
-                        "FieldName": "Spares",
-                        "FieldKey": "spares",
-                        "FieldValue": "hjk"
-                    },
-                    {
-                        "FieldName": "Comments",
-                        "FieldKey": "comments",
-                        "FieldValue": "84.7%"
-                    }
-                ]
-            },
-            {
-                "Status": 0,
-                "AirlineCode": "QX",
-                "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
-                "UserId": "BATCH",
-                "Template": 0930,
-                "ManualDataList": [
-                    {
-                        "FieldName": "Cancellations (XLS)",
-                        "FieldKey": "cancellations",
-                        "FieldValue": "jkl verified! !!! woo hoo!!!"
-                    },
-                    {
-                        "FieldName": "Delays",
-                        "FieldKey": "delays",
-                        "FieldValue": "gjhgjh"
-                    },
-                    {
-                        "FieldName": "Diversions",
-                        "FieldKey": "diversions",
-                        "FieldValue": "gjhgjh"
-                    },
-                    {
-                        "FieldName": "Air Traffic Control (ATC)",
-                        "FieldKey": "atc",
-                        "FieldValue": "ghghjghj"
-                    },
-                    {
-                        "FieldName": "OTS",
-                        "FieldKey": "ots",
-                        "FieldValue": "gygjh"
-                    },
-                    {
-                        "FieldName": "L48 Spares",
-                        "FieldKey": "spares",
-                        "FieldValue": "jlk"
-                    },
-                    {
-                        "FieldName": "QX Alaska Spare",
-                        "FieldKey": "qas",
-                        "FieldValue": "92.0%"
-                    },
-                    {
-                        "FieldName": "AS Alaska Spare",
-                        "FieldKey": "aas",
-                        "FieldValue": "92.0%"
-                    },
-                    {
-                        "FieldName": "Comments",
-                        "FieldKey": "comments",
-                        "FieldValue": "This is Horizon. Why is it QX?????????"
-                    }
-                ]
-            },
-            {
-                "Status": 0,
-                "AirlineCode": "OO",
-                "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
-                "UserId": "BATCH",
-                "Template": 0930,
-                "ManualDataList": [
-                    {
-                        "FieldName": "Cancellations (XLS)",
-                        "FieldKey": "cancellations",
-                        "FieldValue": "jljfdglkjklfdj verified!!!"
-                    },
-                    {
-                        "FieldName": "OTS Summary",
-                        "FieldKey": "ots",
-                        "FieldValue": "gkhkhlkjjk"
-                    },
-                    {
-                        "FieldName": "Spares",
-                        "FieldKey": "spares",
-                        "FieldValue": "hhkjh"
-                    },
-                    {
-                        "FieldName": "Delays",
-                        "FieldKey": "delays",
-                        "FieldValue": "gjlk"
-                    },
-                    {
-                        "FieldName": "Diversions",
-                        "FieldKey": "diversions",
-                        "FieldValue": "gjlk"
-                    },
-                    {
-                        "FieldName": "Comments",
-                        "FieldKey": "comments",
-                        "FieldValue": "88.0%"
-                    }
-                ]
-            },
-            {
-                "Status": 0,
-                "AirlineCode": "KS",
-                "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
-                "UserId": "BATCH",
-                "Template": 0930,
-                "ManualDataList": [
-                    {
-                        "FieldName": "Core Dept D15",
-                        "FieldKey": "cdd",
-                        "FieldValue": "N/A% - 0 Dept"
-                    },
-                    {
-                        "FieldName": "Cancellations (XLS)",
-                        "FieldKey": "cancellations",
-                        "FieldValue": "jlkjlk verified!!!!!!"
-                    },
-                    {
-                        "FieldName": "Delays",
-                        "FieldKey": "delays",
-                        "FieldValue": "lkjlk"
-                    },
-                    {
-                        "FieldName": "Extras",
-                        "FieldKey": "extras",
-                        "FieldValue": "lkjlk"
-                    },
-                    {
-                        "FieldName": "Tech Stops",
-                        "FieldKey": "ts",
-                        "FieldValue": "lkjlk"
-                    },
-                    {
-                        "FieldName": "Weather (WX)",
-                        "FieldKey": "weather",
-                        "FieldValue": "fair"
-                    },
-                    {
-                        "FieldName": "Bags of Hand",
-                        "FieldKey": "boh",
-                        "FieldValue": "jlk"
-                    },
-                    {
-                        "FieldName": "Standbys",
-                        "FieldKey": "standbys",
-                        "FieldValue": "jlk"
-                    },
-                    {
-                        "FieldName": "Comments",
-                        "FieldKey": "comments",
-                        "FieldValue": "jlk"
-                    }
-                ]
-            }
-        ]
-    }
-]
+{
+    "data": [
+        {
+            "Status": 0,
+            "AirlineCode": "AS",
+            "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
+            "UserId": "BATCH",
+            "Template": "0930",
+            "ManualDataList": [
+                {
+                    "FieldName": "IT System Status",
+                    "FieldKey": "itss",
+                    "FieldValue": "testing temp"
+                },
+                {
+                    "FieldName": "Cancellations (XLS)",
+                    "FieldKey": "cancellations",
+                    "FieldValue": "0"
+                },
+                {
+                    "FieldName": "Delays",
+                    "FieldKey": "delays",
+                    "FieldValue": "idk"
+                },
+                {
+                    "FieldName": "Weather (WX)",
+                    "FieldKey": "weather",
+                    "FieldValue": "smoke from canada too op pls nerf"
+                },
+                {
+                    "FieldName": "Diversions",
+                    "FieldKey": "diversions",
+                    "FieldValue": "idk"
+                },
+                {
+                    "FieldName": "Air Traffic Control (ATC)",
+                    "FieldKey": "atc",
+                    "FieldValue": "something something winds"
+                },
+                {
+                    "FieldName": "OTS",
+                    "FieldKey": "ots",
+                    "FieldValue": "stuff and such!"
+                },
+                {
+                    "FieldName": "Spares",
+                    "FieldKey": "spares",
+                    "FieldValue": "...tires?"
+                },
+                {
+                    "FieldName": "Comments",
+                    "FieldKey": "comments",
+                    "FieldValue": "AS comments"
+                }
+            ]
+        },
+        {
+            "Status": 0,
+            "AirlineCode": "VX",
+            "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
+            "UserId": "BATCH",
+            "Template": "0930",
+            "ManualDataList": [
+                {
+                    "FieldName": "IT System Status",
+                    "FieldKey": "itss",
+                    "FieldValue": "VX stuff and such and yeah!!!! :D posted on the 14th with a different time stamp. "
+                },
+                {
+                    "FieldName": "Cancellations (XLS)",
+                    "FieldKey": "cancellations",
+                    "FieldValue": "fsdjfdshjfsdahj verified!!"
+                },
+                {
+                    "FieldName": "OTS",
+                    "FieldKey": "ots",
+                    "FieldValue": "hjk"
+                },
+                {
+                    "FieldName": "Delays",
+                    "FieldKey": "delays",
+                    "FieldValue": "hjk"
+                },
+                {
+                    "FieldName": "Diversions",
+                    "FieldKey": "diversions",
+                    "FieldValue": "hjk"
+                },
+                {
+                    "FieldName": "Weather (WX)",
+                    "FieldKey": "weather",
+                    "FieldValue": "hkj"
+                },
+                {
+                    "FieldName": "Air Traffic Control (ATC)",
+                    "FieldKey": "atc",
+                    "FieldValue": "hjk"
+                },
+                {
+                    "FieldName": "Spares",
+                    "FieldKey": "spares",
+                    "FieldValue": "hjk"
+                },
+                {
+                    "FieldName": "Comments",
+                    "FieldKey": "comments",
+                    "FieldValue": "84.7%"
+                }
+            ]
+        },
+        {
+            "Status": 0,
+            "AirlineCode": "QX",
+            "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
+            "UserId": "BATCH",
+            "Template": "0930",
+            "ManualDataList": [
+                {
+                    "FieldName": "Cancellations (XLS)",
+                    "FieldKey": "cancellations",
+                    "FieldValue": "jkl verified! !!! woo hoo!!!"
+                },
+                {
+                    "FieldName": "Delays",
+                    "FieldKey": "delays",
+                    "FieldValue": "gjhgjh"
+                },
+                {
+                    "FieldName": "Diversions",
+                    "FieldKey": "diversions",
+                    "FieldValue": "gjhgjh"
+                },
+                {
+                    "FieldName": "Air Traffic Control (ATC)",
+                    "FieldKey": "atc",
+                    "FieldValue": "ghghjghj"
+                },
+                {
+                    "FieldName": "OTS",
+                    "FieldKey": "ots",
+                    "FieldValue": "gygjh"
+                },
+                {
+                    "FieldName": "L48 Spares",
+                    "FieldKey": "spares",
+                    "FieldValue": "jlk"
+                },
+                {
+                    "FieldName": "QX Alaska Spare",
+                    "FieldKey": "qas",
+                    "FieldValue": "92.0%"
+                },
+                {
+                    "FieldName": "AS Alaska Spare",
+                    "FieldKey": "aas",
+                    "FieldValue": "92.0%"
+                },
+                {
+                    "FieldName": "Comments",
+                    "FieldKey": "comments",
+                    "FieldValue": "This is Horizon. Why is it QX?????????"
+                }
+            ]
+        },
+        {
+            "Status": 0,
+            "AirlineCode": "OO",
+            "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
+            "UserId": "BATCH",
+            "Template": "0930",
+            "ManualDataList": [
+                {
+                    "FieldName": "Cancellations (XLS)",
+                    "FieldKey": "cancellations",
+                    "FieldValue": "jljfdglkjklfdj verified!!!"
+                },
+                {
+                    "FieldName": "OTS Summary",
+                    "FieldKey": "ots",
+                    "FieldValue": "gkhkhlkjjk"
+                },
+                {
+                    "FieldName": "Spares",
+                    "FieldKey": "spares",
+                    "FieldValue": "hhkjh"
+                },
+                {
+                    "FieldName": "Delays",
+                    "FieldKey": "delays",
+                    "FieldValue": "gjlk"
+                },
+                {
+                    "FieldName": "Diversions",
+                    "FieldKey": "diversions",
+                    "FieldValue": "gjlk"
+                },
+                {
+                    "FieldName": "Comments",
+                    "FieldKey": "comments",
+                    "FieldValue": "88.0%"
+                }
+            ]
+        },
+        {
+            "Status": 0,
+            "AirlineCode": "KS",
+            "Timestamp": "Tue Aug 14 2017 4:25:50 PM",
+            "UserId": "BATCH",
+            "Template": "0930",
+            "ManualDataList": [
+                {
+                    "FieldName": "Core Dept D15",
+                    "FieldKey": "cdd",
+                    "FieldValue": "N/A% - 0 Dept"
+                },
+                {
+                    "FieldName": "Cancellations (XLS)",
+                    "FieldKey": "cancellations",
+                    "FieldValue": "jlkjlk verified!!!!!!"
+                },
+                {
+                    "FieldName": "Delays",
+                    "FieldKey": "delays",
+                    "FieldValue": "lkjlk"
+                },
+                {
+                    "FieldName": "Extras",
+                    "FieldKey": "extras",
+                    "FieldValue": "lkjlk"
+                },
+                {
+                    "FieldName": "Tech Stops",
+                    "FieldKey": "ts",
+                    "FieldValue": "lkjlk"
+                },
+                {
+                    "FieldName": "Weather (WX)",
+                    "FieldKey": "weather",
+                    "FieldValue": "fair"
+                },
+                {
+                    "FieldName": "Bags of Hand",
+                    "FieldKey": "boh",
+                    "FieldValue": "jlk"
+                },
+                {
+                    "FieldName": "Standbys",
+                    "FieldKey": "standbys",
+                    "FieldValue": "jlk"
+                },
+                {
+                    "FieldName": "Comments",
+                    "FieldKey": "comments",
+                    "FieldValue": "jlk"
+                }
+            ]
+        }
+    ]
+}
