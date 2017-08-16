@@ -272,7 +272,7 @@ button:disabled {
 	appearance: none;
 }
 
-.options-dropdown select:hover, .options-dropdown input:hover {
+.options-dropdown select:hover:enabled, .options-dropdown input:hover:enabled {
 	cursor: pointer;
 }
 
@@ -281,25 +281,23 @@ button:disabled {
 	background-size: 20px 15px;
 }
 
-.options-dropdown #date-dropdown {
+.options-dropdown #date-picker {
 	background: url('../Assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
-.options-dropdown #date-dropdown::-webkit-inner-spin-button {
+.options-dropdown #date-picker::-webkit-inner-spin-button,
+#date-picker::-webkit-inner-spin-button, 
+#date-picker::-webkit-clear-button {
 	display: none;
 }
 
-.options-dropdown #date-dropdown::-webkit-calendar-picker-indicator  {
+.options-dropdown #date-picker::-webkit-calendar-picker-indicator  {
 	opacity: 0;
 }
 
-#date-dropdown::-webkit-inner-spin-button {
-  display: none;
-}
-
-#date-dropdown::-webkit-calendar-picker-indicator {
-  opacity: 0;
+#date-picker::-webkit-calendar-picker-indicator {
+	opacity: 0;
 }
 
 .option-button {

@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+	/*************************************************************************************
+    *																					 *
+    * GLOBAL VARIABLES       													         *
+    *																					 *
+    *************************************************************************************/
+
     // Global Variable representing the final document
     var FINAL_JSON_DOCUMENT = {
         'data': []
@@ -57,6 +63,22 @@ $(document).ready(function () {
         'KS': null
     }
 
+    var CURRENT_TEMPLATE = {
+    	'AS': 0930,
+        'VX': 0930,
+        'QX': 0930,
+        'OO': 0930,
+        'KS': 0930
+    }
+
+    var CURRENT_DATE = {
+    	'AS': null,
+        'VX': null,
+        'QX': null,
+        'OO': null,
+        'KS': null
+    }
+
     // Keeps track of the state of the positive button and fields
     var IN_CREATE_STATE = true;
 
@@ -66,33 +88,51 @@ $(document).ready(function () {
 
     var USE_LIVE_DATA = true;
 
+    /*************************************************************************************
+    *																					 *
+    * INITIAL ONLOAD FUNCTIONS       													 *
+    *																					 *
+    *************************************************************************************/
+
     getAirlineMetrics();
-    getMostRecentDocument();
+    getLastUpdatedDocument();
     disableFields();
 
+    /*************************************************************************************
+    *																					 *
+    * EVENT HANDLERS        													         *
+    *																					 *
+    *************************************************************************************/
+
+    // Alerts the user when they reload to see if they want to reload
+    $('#form-group').data('serialize', $('#form-group').serialize()); // On load save form current state
+    $(window).on('beforeunload', function(e) {
+    	if ($('#form-group').serialize() != $('#form-group').data('serialize')) {
+            return true;
+        } else {
+            e = null; // i.e; if form state change show warning box, else don't show it.
+        }
+    });
+
     // Sets the date to today on start
-    document.getElementById('date-dropdown').valueAsDate = new Date();
+    document.getElementById('date-picker').valueAsDate = new Date();
 
-    $('#positive-button').bind({
+    // Date for the date label
+    $('#updated-date-time').html(getDate());
 
-        // Verifies the fields
-        click: verifyFields
-    });
+    // Verify the fields
+    $('#positive-button').on('click', verifyFields);
 
-    $('#negative-button').on('click', function() {
-    	$('#positive-button span').html('CREATE NEW');
-    	$('#positive-button').prop('disabled', false);
-		IN_CREATE_STATE = true;
-		$('textarea').prop('disabled', true);
-		$(this).prop('disabled', true);
-		fillInFields($('.active span').html());
-    });
+    // Sets positive button into original state
+    $('#negative-button').on('click', cancel);
 
     // Submit button
     $('#submit-button').on('click', submit);
 
-    // Date for the date label
-    $('#updated-date-time').html(getDate());
+    $('#template-dropdown').on('change', getHistoricalDocument);
+
+    // Changes the document based on the selected date
+    $('#date-picker').on('change', getHistoricalDocument);
 
     // Updates which airline tab is selected
     $('.tab-item').on('click', updateActive);
@@ -100,100 +140,23 @@ $(document).ready(function () {
     // Sets max character limit for text area
     $('textarea').prop('maxLength', 256);
 
-    // Textarea events
-    $('textarea').bind({
 
-        // Enables button when there is text input
-        input: function () {
-            $('#positive-button').prop('disabled', false);
-        },
 
-        // Prevents user typing in the character if it matches the regex
-        keypress: function (e) {
-            e = e || window.event;
-            var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
-            var charStr = String.fromCharCode(charCode);
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - VALIDATION        													 *
+    *																					 *
+    *************************************************************************************/
 
-            // Regex here
-            // var pattern = /^[a-zA-Z0-9!~`@#\$%\^\&*\)\(+=._-]+$/;
-            if (isEmoji(charStr) /*|| !pattern.test(charStr)*/) {
-                return false;
-            }
-        },
-
-        // Prevents pasting emojis
-        paste: function (e) {
-            console.log('inside paste');
-            var $currentTextArea = $(this);
-            setTimeout(function () {
-                var text = $currentTextArea.val();
-                console.log('is emoji? ' + isEmoji(text));
-                text = replaceEmojis(text, '\ufffd');
-                $currentTextArea.prop('value', text);
-            }, 10);
-
-            // This prevents the user from pasting
-            // e.preventDefault();
-
-        }
-    });
-
-    // Alerts the user when they reload to see if they want to reload
-    $('#form-group').data('serialize', $('#form-group').serialize()); // On load save form current state
-    $(window).bind({
-        beforeunload: function (e) {
-            if ($('#form-group').serialize() != $('#form-group').data('serialize')) {
-                return true;
-            } else {
-                e = null; // i.e; if form state change show warning box, else don't show it.
+    // Checks if every airline is verified
+    function everythingIsVerified() {
+        var verified = true;
+        for (var airline in AIRLINES_VERIFIED) {
+            if (AIRLINES_VERIFIED[airline] === false) {
+                verified = false;
             }
         }
-    });
-
-    // Disables the textarea fields
-    function disableFields() {
-    	$('textarea').prop('disabled', true);
-    }
-
-    // Updates which tab gets set to active (highlighted)
-    function updateActive() {
-        if (IN_CREATE_STATE) {
-            var tabs = $(this).siblings();
-            tabs.removeClass('active');
-            $(this).addClass('active');
-
-            // Changes the header based on the airline
-            var currentSpan = $('.active span');
-            var airlineCode = currentSpan.html();
-            var airlineName = currentSpan.attr('name');
-            $('#airline-header span').html(airlineName + ' (' + airlineCode + ')');
-
-            switchMetrics(airlineCode);
-            switchTimeStamp(airlineCode);
-            fillInFields(airlineCode);
-        } else {
-        	alert('You are in edit mode. Cannot perform action');
-        }
-    }
-
-    // Fills in the fields with the data they're verified with
-    function fillInFields(airlineCode) {
-    	var fields = null;
-
-    	if (USE_LIVE_DATA) {
-    		fields = AIRLINE_MANUAL_DATA[airlineCode];
-    	} else {
-        	fields = SAVED_VERIFIED_DATA[airlineCode];
-        }
-
-        if (fields != null) {
-            for (var i = 0; i < fields.length; i++) {
-                $('textarea[name=' + fields[i]['FieldKey'] + ']').prop('value', fields[i]['FieldValue']);
-            }
-        } else {
-            $('textarea').prop('value', '');
-        }
-        $('#option-headers .loader').removeClass('loader');
+        return verified;
     }
 
     // Returns false when fields are not empty and user attempts to 
@@ -216,6 +179,47 @@ $(document).ready(function () {
         return result === '';
     }
 
+    // Checks if the text is an emoji
+    function isEmoji(text) {
+        var unifiedEmojiRanges = [
+            '\ud83c[\udf00-\udfff]', // U+1F300 to U+1F3FF
+            '\ud83d[\udc00-\ude4f]', // U+1F400 to U+1F64F
+            '\ud83d[\ude80-\udeff]'  // U+1F680 to U+1F6FF
+        ];
+        var reg = new RegExp(unifiedEmojiRanges.join('|'), 'g');
+
+        return reg.test(text);
+    }
+
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - BUTTONS        													     *
+    *																					 *
+    *************************************************************************************/
+
+    // Cancel button functionality
+    function cancel() {
+    	$('#positive-button span').html('CREATE NEW');
+    	$('#positive-button').prop('disabled', false);
+		IN_CREATE_STATE = true;
+		$('textarea').prop('disabled', true);
+		$(this).prop('disabled', true);
+		fillInFields($('.active span').html());
+		enableDropdowns(true);
+    }
+
+    // Submits the document as a whole to the database
+    function submit() {
+    	if (REAL_POST) {
+    		postDocument(FINAL_JSON_DOCUMENT);
+    		removeCheckMarks();
+    	} else {
+	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
+	        alert('Posted document is in the console');
+	    }
+        $(this).prop('disabled', true);
+    }
+
     // Checks if fields are verified
     function verifyFields() {
     	var textareas = $('textarea');
@@ -226,9 +230,11 @@ $(document).ready(function () {
     		IN_CREATE_STATE = false;
     		textareas.prop('disabled', false);
     		$('#negative-button').prop('disabled', false);
+    		enableDropdowns(false);
     	} else {
     		$('#positive-button span').html('CREATE NEW');
     		$('#negative-button').prop('disabled', true);
+    		enableDropdowns(true);
     		IN_CREATE_STATE = true;
     		textareas.prop('disabled', true);
 
@@ -239,6 +245,7 @@ $(document).ready(function () {
 	            'AirlineCode': airlineCode,
 	            'Timestamp': getDate(),
 	            'UserId': 'BATCH',
+	            'Template': $('#template-dropdown').val(),
 	            'ManualDataList': []
 	        };
 	        var errorMessage = 'Fields not verified:\n\n';
@@ -284,27 +291,109 @@ $(document).ready(function () {
 	    }
     }
 
-    // Checks if every airline is verified
-    function everythingIsVerified() {
-        var verified = true;
-        for (var airline in AIRLINES_VERIFIED) {
-            if (AIRLINES_VERIFIED[airline] === false) {
-                verified = false;
-            }
-        }
-        return verified;
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - FIELDS        													     *
+    *																					 *
+    *************************************************************************************/
+
+    // Disables the textarea fields
+    function disableFields() {
+    	$('textarea').prop('disabled', true);
     }
 
-    // Checks if the text is an emoji
-    function isEmoji(text) {
-        var unifiedEmojiRanges = [
-            '\ud83c[\udf00-\udfff]', // U+1F300 to U+1F3FF
-            '\ud83d[\udc00-\ude4f]', // U+1F400 to U+1F64F
-            '\ud83d[\ude80-\udeff]'  // U+1F680 to U+1F6FF
-        ];
-        var reg = new RegExp(unifiedEmojiRanges.join('|'), 'g');
+    // Fills in the fields with the data they're verified with
+    function fillInFields(airlineCode) {
+    	console.log('Filling in fields for: ' + airlineCode);
+    	var fields = null;
 
-        return reg.test(text);
+    	if (USE_LIVE_DATA) {
+    		fields = AIRLINE_MANUAL_DATA[airlineCode];
+    	} else {
+        	fields = SAVED_VERIFIED_DATA[airlineCode];
+        }
+
+        // Old style when there was already a predetermined amount of fields
+        // This would find the fields by name and set their data dynamically
+        // if (fields != null) {
+        //     for (var i = 0; i < fields.length; i++) {
+        //         $('textarea[name=' + fields[i]['FieldKey'] + ']').prop('value', fields[i]['FieldValue']);
+        //     }
+        // } else {
+        //     $('textarea').prop('value', '');
+        // }
+
+        if (fields != null) {
+        	var $formGroup = $('.form-group');
+        	$formGroup.html('');
+        	for (var i = 0; i < fields.length; i++) {
+        		var currentField = fields[i];
+
+        		var $formSectionDiv = $(document.createElement('div'));
+        		var $nameLabel = $(document.createElement('label'));
+        		var $textarea = $(document.createElement('textarea'));
+
+        		$formSectionDiv.addClass('form-sections');
+
+        		$nameLabel.addClass('labels');
+        		$nameLabel.html(currentField['FieldName']);
+
+        		$textarea.prop({
+        			rows: '3',
+        			name: currentField['FieldKey'],
+        			disabled: true,
+        			maxLength: 256,
+        			value: currentField['FieldValue']
+        		});
+        		$textarea.addClass('form-control text-area');
+
+        		$formSectionDiv.append($nameLabel);
+        		$formSectionDiv.append($textarea);
+
+        		$formGroup.append($formSectionDiv);
+
+        	}
+        }
+
+        // Textarea events
+	    $('textarea').bind({
+
+	        // Enables button when there is text input
+	        input: function () {
+	            $('#positive-button').prop('disabled', false);
+	        },
+
+	        // Prevents user typing in the character if it matches the regex
+	        keypress: function (e) {
+	            e = e || window.event;
+	            var charCode = (typeof e.which == "undefined") ? e.keyCode : e.which;
+	            var charStr = String.fromCharCode(charCode);
+
+	            // Regex here
+	            // var pattern = /^[a-zA-Z0-9!~`@#\$%\^\&*\)\(+=._-]+$/;
+	            if (isEmoji(charStr) /*|| !pattern.test(charStr)*/) {
+	                return false;
+	            }
+	        },
+
+	        // Prevents pasting emojis
+	        paste: function (e) {
+	            console.log('inside paste');
+	            var $currentTextArea = $(this);
+	            setTimeout(function () {
+	                var text = $currentTextArea.val();
+	                console.log('is emoji? ' + isEmoji(text));
+	                text = replaceEmojis(text, '\ufffd');
+	                $currentTextArea.prop('value', text);
+	            }, 10);
+
+	            // This prevents the user from pasting
+	            // e.preventDefault();
+
+	        }
+	    });
+
+        $('#option-headers .loader').removeClass('loader');
     }
 
     // Replaces the emojis with the given replacer
@@ -318,59 +407,11 @@ $(document).ready(function () {
         return text.replace(reg, replacer);
     }
 
-    // Returns a string representation of the date in the format [day month year hh:mm:ss AM/PM]
-    function getDate(milliseconds = null) {
-    	var formattedDate;
-    	if (milliseconds == null) {
-        	formattedDate = new Date();
-        } else {
-        	formattedDate = new Date(0);
-        	formattedDate.setUTCSeconds(milliseconds);
-        }
-        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString();
-    }
-
-    // Submits the document as a whole to the database
-    function submit() {
-    	if (REAL_POST) {
-    		postDocument(FINAL_JSON_DOCUMENT);
-    		removeCheckMarks();
-    	} else {
-	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
-	        alert('Posted document is in the console');
-	    }
-        $(this).prop('disabled', true);
-    }
-
-    function removeCheckMarks() {
-    	for (var airline in AIRLINES_VERIFIED) {
-        	AIRLINES_VERIFIED[airline] = false;
-        	var id = '#check-mark-' + airline;
-			$(id).removeClass('check-mark-image');
-        }
-    }
-
-    // Makes a request to the url and performs a callback function
-    function request(url, callback) {
-        $.ajax({
-            url: url,
-            type: 'GET',
-            success: callback,
-            error: function (req, err) {
-                console.log('Error: ' + JSON.parse(err));
-            }
-        })
-            .done(function () {
-                console.log('done');
-            })
-            .always(function () {
-                console.log('complete');
-            });
-    }
-
-    function switchTimeStamp(airlineCode) {
-    	$('#updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
-    }
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - METRICS       											             *
+    *																					 *
+    *************************************************************************************/
 
     // Switches the metrics based on the airlineCode provided
     function switchMetrics(airlineCode) {
@@ -392,7 +433,7 @@ $(document).ready(function () {
 
 	            $metricsTypeSpan.html(Object.keys(metrics)[count]);
 	            $metricsPercentSpan.html(metrics[metric]);
-	            $metricsGoalSpan.data('goal', 87);
+	            $metricsGoalSpan.data('goal', 75);
 	            $metricsGoalSpan.html('(' + $metricsGoalSpan.data('goal') + '%)');
 
 	            $metricsObjectDiv.append($metricsTypeSpan);
@@ -443,23 +484,170 @@ $(document).ready(function () {
 
     /*************************************************************************************
     *																					 *
-    * HTTP REQUESTS        													             *
+    * FUNCTIONS - LABELS AND TABS       											     *
+    *																					 *
+    *************************************************************************************/
+
+    // Removes the verified check marks from the tabs
+    function removeCheckMarks() {
+    	for (var airline in AIRLINES_VERIFIED) {
+        	AIRLINES_VERIFIED[airline] = false;
+        	var id = '#check-mark-' + airline;
+			$(id).removeClass('check-mark-image');
+        }
+    }
+
+    // Switches the timestamp for the given airline
+    function switchTimeStamp(airlineCode) {
+    	$('#updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
+    }
+
+    // Updates which tab gets set to active (highlighted)
+    function updateActive() {
+        if (IN_CREATE_STATE) {
+            var tabs = $(this).siblings();
+            tabs.removeClass('active');
+            $(this).addClass('active');
+
+            // Changes the header based on the airline
+            var currentSpan = $('.active span');
+            var airlineCode = currentSpan.html();
+            var airlineName = currentSpan.attr('name');
+            $('#airline-header span').html(airlineName + ' (' + airlineCode + ')');
+            switchMetrics(airlineCode);
+            switchAirlineData(airlineCode);
+        } else {
+        	alert('You are in edit mode. Cannot perform action');
+        }
+    }
+
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - GENERIC HELPERS      													 *
+    *																					 *
+    *************************************************************************************/
+
+
+    // Returns a string representation of the date in the format [day month year hh:mm:ss AM/PM]
+    function getDate(milliseconds = null) {
+    	var formattedDate;
+    	if (milliseconds == null) {
+        	formattedDate = new Date();
+        } else {
+        	formattedDate = new Date(0);
+        	formattedDate.setUTCSeconds(milliseconds);
+        }
+        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString();
+    }
+
+    // Enables dropdowns if true and false otherwise
+    function enableDropdowns(enabled) {
+    	var $templateDropdown = $('#template-dropdown');
+    	var $datePicker = $('#date-picker');
+    	if (enabled) {
+    		$templateDropdown.prop('disabled', false);
+    		$datePicker.prop('disabled', false);
+    	} else {
+    		$templateDropdown.prop('disabled', true);
+    		$datePicker.prop('disabled', true);
+    	}
+    }
+
+    function switchTemplateValue(airlineCode) {
+    	$('#template-dropdown').val(CURRENT_TEMPLATE[airlineCode]);
+    }
+
+    function switchDateValue(airlineCode) {
+    	$('#date-picker').val(CURRENT_DATE[airlineCode]);
+    }
+
+    function getHistoricalDocument() {
+    	$('#option-headers div').addClass('loader');
+    	var date = $('#date-picker').val();
+    	var filter = '&filter=all';
+    	getMostRecentDocument('date=' + date + filter);
+    }
+
+    function switchAirlineData(airlineCode) {
+    	switchTimeStamp(airlineCode);
+    	switchDateValue(airlineCode);
+    	switchTemplateValue(airlineCode);
+    	fillInFields(airlineCode);
+    }
+
+    function setGlobals(airlineCode, withObject) {
+    	AIRLINE_TIMESTAMP[airlineCode] = withObject['Timestamp'];
+		AIRLINE_MANUAL_DATA[airlineCode] = withObject['ManualDataList'];
+		CURRENT_TEMPLATE[airlineCode] = withObject['Template'];
+		CURRENT_DATE[airlineCode] = new Date(withObject['Timestamp']).toISOString().substring(0, 10);
+    }
+
+    /*************************************************************************************
+    *																					 *
+    * AJAX CALLS       													                 *
     *																					 *
     *************************************************************************************/
 
     // Gets all the documents in the database
     function getDocuments() {
-        request('/RestClient/GetAllDocuments', getAllDocuments);
+        getRequest('/RestClient/GetAllDocuments', getAllDocuments);
     }
 
     // Gets the most recent document
-    function getMostRecentDocument() {
-    	request('/RestClient/GetAllDocuments', fillManualData);
+    function getLastUpdatedDocument() {
+    	getRequest('/RestClient/GetAllDocuments', fillManualData);
+    }
+
+    // Gets the document by date
+    function getMostRecentDocument(date) {
+    	getRequest('/RestClient/GetMostRecentDocument', fillSpecifiedAirline, date);
     }
 
     // Gets the airline metrics
     function getAirlineMetrics() {
-        request('/RestClient/getAirlineMetrics', fillMetrics);
+        getRequest('/RestClient/GetAirlineMetrics', fillMetrics);
+    }
+
+    function postDocument(jsonData) {
+    	postRequest('RestClient/Post', jsonData);
+    }
+
+    /*************************************************************************************
+    *																					 *
+    * HTTP REQUESTS       													             *
+    *																					 *
+    *************************************************************************************/
+
+    // Makes a request to the url and performs a callback function
+    function getRequest(url, callback, passedData = null) {
+        $.ajax({
+            url: url,
+            type: 'GET',
+            success: callback,
+            data: passedData,
+            error: function (req, err) {
+                console.log('Error: ' + JSON.parse(err));
+            }
+        });
+    }
+
+    // Posts a new document into the database
+    function postRequest(url, jsonObject) {
+        console.log('Post was clicked');
+        $.ajax({
+            type: 'POST',
+            url: url,
+            dataType: 'json',
+            contentType: 'application/json',
+            processData: false,
+            data: JSON.stringify(jsonObject),
+            success: function (data) {
+                alert('Document posted!');
+            },
+            error: function (req, err) {
+                console.log('Error: ' + JSON.parse(err));
+            }
+        });
     }
 
     /*************************************************************************************
@@ -476,21 +664,49 @@ $(document).ready(function () {
         }
     }
 
+    function fillSpecifiedAirline(response) {
+    	var airlineCode = $('.active span').html();
+    	var template = $('#template-dropdown').val();
+    	console.log('Current temp: ' + template);
+		var date = $('#date-picker').val();
+    	if (response !== null && response !== 'null') {
+    		var documents = $.parseJSON(response);
+
+    		var keepGoing = true;
+    		for (var i = documents.length - 1; i >= 0 && keepGoing; i--) {
+    			var currentDocument = documents[i];
+    			var airlines = currentDocument['data'];
+    			for (var j = 0; j < airlines.length; j++) {
+    				var currentAirline = airlines[j];
+    				if (currentAirline['AirlineCode'] == airlineCode && currentAirline['Template'] == template) {
+    					var milliseconds = currentDocument['_ts'];
+    					$('#updated-date-time').html(getDate(milliseconds));
+    					setGlobals(airlineCode, currentAirline);
+    					keepGoing = false;
+    				}
+    			}
+    		}
+    	} else {
+    		alert('No ' + template + ' template found on ' + date + ' for ' + airlineCode);
+    	}
+    	switchAirlineData('AS');
+    	$('#option-headers div').removeClass('loader');
+    }
+
     // Gets the most recent document
     function fillManualData(response) {
-    	if (response != null) {
+    	if (response !== null && response !== 'null') {
     		var result = $.parseJSON(response);
     		var latestDocument = result[result.length - 1];
     		var airlines = latestDocument['data'];
     		var milliseconds = latestDocument['_ts'];
-    		$('#updated-date-time').html(getDate(milliseconds))
+    		$('#updated-date-time').html(getDate(milliseconds));
     		FINAL_JSON_DOCUMENT['data'] = airlines;
     		for (var i = 0; i < airlines.length; i++) {
     			var currentAirline = airlines[i];
     			var airlineCode = currentAirline['AirlineCode'];
 
-    			AIRLINE_TIMESTAMP[airlineCode] = currentAirline['Timestamp'];
-    			AIRLINE_MANUAL_DATA[airlineCode] = currentAirline['ManualDataList'];
+    			setGlobals(airlineCode, currentAirline);
 
     			// var boolString = currentAirline['Verified'];
     			// var bool = false;
@@ -499,6 +715,8 @@ $(document).ready(function () {
     			// }
     			// AIRLINES_VERIFIED[airlineCode] = bool;
     		}
+    	} else {
+    		alert('No documents posted on ' + $('#date-picker').val());
     	}
     	// for (airline in AIRLINES_VERIFIED) {
     	// 	console.log(AIRLINES_VERIFIED[airline]);
@@ -507,8 +725,7 @@ $(document).ready(function () {
     	// 		$(id).addClass('check-mark-image');
     	// 	}
     	// }
-    	switchTimeStamp('AS');
-    	fillInFields('AS');
+    	switchAirlineData('AS');
     }
 
     // Fills in the global metrics object
@@ -532,24 +749,5 @@ $(document).ready(function () {
             }
         }
         switchMetrics('AS');
-    }
-
-    // Posts a new document into the database
-    function postDocument(jsonObject) {
-        console.log('Post was clicked');
-        $.ajax({
-            type: 'POST',
-            url: '/RestClient/Post',
-            dataType: 'json',
-            contentType: 'application/json',
-            processData: false,
-            data: JSON.stringify(jsonObject),
-            success: function (data) {
-                alert('Document posted!');
-            },
-            error: function (req, err) {
-                console.log('Error: ' + JSON.parse(err));
-            }
-        });
     }
 });
