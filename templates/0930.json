@@ -57,7 +57,7 @@
         {
             "Status": 0,
             "AirlineCode": "VX",
-            "Timestamp": "Wed Aug 2017 4:25:50 PM",
+            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
             "UserId": "BATCH",
             "Template": "0930",
             "ManualDataList": [
@@ -111,7 +111,7 @@
         {
             "Status": 0,
             "AirlineCode": "QX",
-            "Timestamp": "Wed Aug 2017 4:25:50 PM",
+            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
             "UserId": "BATCH",
             "Template": "0930",
             "ManualDataList": [
@@ -165,7 +165,7 @@
         {
             "Status": 0,
             "AirlineCode": "OO",
-            "Timestamp": "Wed Aug 2017 4:25:50 PM",
+            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
             "UserId": "BATCH",
             "Template": "0930",
             "ManualDataList": [
@@ -204,7 +204,7 @@
         {
             "Status": 0,
             "AirlineCode": "KS",
-            "Timestamp": "Wed Aug 2017 4:25:50 PM",
+            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
             "UserId": "BATCH",
             "Template": "0930",
             "ManualDataList": [
@@ -239,7 +239,7 @@
                     "FieldValue": "fair"
                 },
                 {
-                    "FieldName": "Bags of Hand",
+                    "FieldName": "Bags on Hand",
                     "FieldKey": "boh",
                     "FieldValue": "jlk"
                 },

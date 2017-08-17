@@ -64,13 +64,14 @@
 				</div>
 				<!-- Nav bar end -->
 
-				<div id="airline-header"><span>Alaska Airlines (AS)</span></div>
+				<div id="airline-header"><span>Alaska (AS)</span></div>
 
 				<!-- Metrics start -->
 				<div id="metrics-area">
 
 					<div id="metrics-header">
-						<span>Current Metrics</span>
+						<span id="current-metrics">Current Metrics</span>
+						<span class="updated-date-time"></span>
 						<div class="loader"></div>
 					</div>
 					
@@ -168,7 +169,7 @@
 
 					<div id="option-headers">
 						<span id="updated-header">Most Recently Submitted Report</span>
-						<span id="updated-date-time"></span>
+						<span class="updated-date-time"></span>
 						<div class="loader"></div>
 					</div>
 					
@@ -182,8 +183,8 @@
 								<label for="template-dropdown" class="labels">Template</label>
 							</div>
 
-							<div class="options-dropdown slate">
-								<select name="template-dropdown" id="template-dropdown">
+							<div class="options-dropdown">
+								<select name="template-dropdown" id="template-dropdown" class="dropdown-img">
 									<option value="0500">0500</option>
 		                            <option value="0930">0930</option>
 		                            <option value="1500">1500</option>
@@ -201,8 +202,8 @@
 								<label for="date-picker" class="labels">Date</label>
 							</div>
 
-							<div class="options-dropdown slate">
-								<input type="date" name="date-picker" id="date-picker">
+							<div class="options-dropdown">
+								<input type="date" name="date-picker" id="date-picker" class="calendar-img">
 
 								</input>
 							</div>

@@ -117,8 +117,11 @@ $(document).ready(function () {
     // Sets the date to today on start
     document.getElementById('date-picker').valueAsDate = new Date();
 
+    // Date for the current metrics
+    $('#metrics-header .updated-date-time').html(getDate());
+
     // Date for the date label
-    $('#updated-date-time').html(getDate());
+    $('#option-headers .updated-date-time').html(getDate());
 
     // Verify the fields
     $('#positive-button').on('click', verifyFields);
@@ -499,7 +502,7 @@ $(document).ready(function () {
 
     // Switches the timestamp for the given airline
     function switchTimeStamp(airlineCode) {
-    	$('#updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
+    	$('#option-headers .updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
     }
 
     // Updates which tab gets set to active (highlighted)
@@ -680,16 +683,23 @@ $(document).ready(function () {
     				var currentAirline = airlines[j];
     				if (currentAirline['AirlineCode'] == airlineCode && currentAirline['Template'] == template) {
     					var milliseconds = currentDocument['_ts'];
-    					$('#updated-date-time').html(getDate(milliseconds));
+    					$('#option-headers .updated-date-time').html(getDate(milliseconds));
     					setGlobals(airlineCode, currentAirline);
     					keepGoing = false;
     				}
     			}
     		}
+    		switchAirlineData('AS');
+
+    		// Sets the values of the dropdowns, so user can switch again from that state
+    		if (keepGoing) {
+    			$('#template-dropdown').prop('value', template);
+    			$('#date-picker').prop('value', date);
+    			alert('No ' + template + ' template found on ' + date + ' for ' + airlineCode);
+    		}
     	} else {
-    		alert('No ' + template + ' template found on ' + date + ' for ' + airlineCode);
+    		alert('No documents found on ' + date + ' for ' + airlineCode);
     	}
-    	switchAirlineData('AS');
     	$('#option-headers div').removeClass('loader');
     }
 
@@ -700,7 +710,7 @@ $(document).ready(function () {
     		var latestDocument = result[result.length - 1];
     		var airlines = latestDocument['data'];
     		var milliseconds = latestDocument['_ts'];
-    		$('#updated-date-time').html(getDate(milliseconds));
+    		$('#option-headers .updated-date-time').html(getDate(milliseconds));
     		FINAL_JSON_DOCUMENT['data'] = airlines;
     		for (var i = 0; i < airlines.length; i++) {
     			var currentAirline = airlines[i];
@@ -746,6 +756,7 @@ $(document).ready(function () {
                 metricArray['B4'] = metric['B4'];
                 metricArray['B14'] = metric['B14'];
                 AIRLINE_METRICS[airlineCode] = metricArray;
+                $('#metrics-header .updated-date-time').html(getDate());
             }
         }
         switchMetrics('AS');

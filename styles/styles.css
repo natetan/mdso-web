@@ -62,7 +62,7 @@ button:disabled {
 .button-text, 
 .labels, 
 #airline-header span,
-#metrics-header span {
+#metrics-header #current-metrics {
 	font-weight: bold;
 }
 
@@ -179,7 +179,7 @@ button:disabled {
 	padding: 1%;
 }
 
-#metrics-header span {
+#metrics-header #current-metrics {
 	color: #01426a;
 	padding: 2%;
 	font-size: 18px;
@@ -237,17 +237,17 @@ button:disabled {
 	font-weight: bold;
 }
 
-#option-content #updated-date-time {
+.updated-date-time {
 	font-size: 14px;
 }
 
 #option-content #updated-header,
-#updated-date-time {
+.updated-date-time {
 	margin-right: 2%;
 }
 
 #option-content #updated-header,
-#option-content #updated-date-time {
+.updated-date-time {
 	color: #01426a;
 }
 
@@ -276,13 +276,23 @@ button:disabled {
 	cursor: pointer;
 }
 
-.options-dropdown #template-dropdown {
+#template-dropdown:enabled {
 	background: url('../Assets/dropdown_chevron.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 15px;
 }
 
-.options-dropdown #date-picker {
+#template-dropdown:disabled {
+	background: url('../Assets/dropdown_chevron_inactive.png') no-repeat 97% 50% #ffffff;
+	background-size: 20px 15px;
+}
+
+#date-picker:enabled {
 	background: url('../Assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
+	background-size: 20px 20px;
+}
+
+#date-picker:disabled {
+	background: url('../Assets/calendar_icon_inactive.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
@@ -524,7 +534,7 @@ button:disabled {
 		font-size: 48px;
 	}
 
-	#metrics-header span {
+	#metrics-header #current-metrics {
 		font-size: 24px;
 	}
 
