@@ -294,8 +294,6 @@ button:disabled {
 	height: 35px;
 	width: 220px;
 	padding: 5px; /* If you add too much padding here, the options won't show in IE */
-	-webkit-appearance: none;
-	appearance: none;
 }
 
 .options-dropdown select:hover:enabled, .options-dropdown input:hover:enabled {
@@ -312,6 +310,18 @@ button:disabled {
 	background-size: 20px 15px;
 }
 
+/* Removes default arrow on template for IE10 */
+#template-dropdown::-ms-expand {
+	display: none;
+}
+
+/* Removes default arrow on template for Chrome and Firefox*/
+#template-dropdown {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
 #date-picker:enabled {
 	background: url('../Assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
@@ -322,16 +332,21 @@ button:disabled {
 	background-size: 20px 20px;
 }
 
-.options-dropdown #date-picker::-webkit-inner-spin-button,
+/* Removes clear button and inner spin button */
 #date-picker::-webkit-inner-spin-button, 
 #date-picker::-webkit-clear-button {
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 	display: none;
 }
 
-.options-dropdown #date-picker::-webkit-calendar-picker-indicator  {
-	opacity: 0;
+/* Date picker clear for IE */
+#date-picker::-ms-clear {
+	display: none;
 }
 
+/* Removes display picker indicator */
 #date-picker::-webkit-calendar-picker-indicator {
 	opacity: 0;
 }

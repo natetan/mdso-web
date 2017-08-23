@@ -617,9 +617,13 @@ $(document).ready(function () {
     *																					 *
     *************************************************************************************/
 
+    // Not using default parameters for functions for IE usability
+    function getDate() {
+    	getDate(null);
+    }
 
     // Returns a string representation of the date in the format [day month year hh:mm:ss AM/PM]
-    function getDate(milliseconds = null) {
+    function getDate(milliseconds) {
     	var formattedDate;
     	if (milliseconds == null) {
         	formattedDate = new Date();
@@ -665,7 +669,7 @@ $(document).ready(function () {
     	fillInFields(airlineCode);
     }
 
-    function createModal(id, title = 'alert', body = 'error', close = 'Close') {
+    function createModal(id, title, body) {
     	$modalContainer = $('.modalContainer');
 
     	// Create
@@ -710,7 +714,7 @@ $(document).ready(function () {
     		class: 'btn btn-default',
     	});
     	$modalFooterButton.data('dismiss', 'modal');
-    	$modalFooterButton.html(close);
+    	$modalFooterButton.html('Close');
     	$modalFooterButton.click(function() {
     		closeModal(id);
     	});
@@ -791,8 +795,13 @@ $(document).ready(function () {
     *																					 *
     *************************************************************************************/
 
+    // Default parameters not used because they're not supported in IE
+    function getRequest(url, callback) {
+    	getRequest(url, callback, null);
+    }
+
     // Makes a request to the url and performs a callback function
-    function getRequest(url, callback, passedData = null) {
+    function getRequest(url, callback, passedData) {
         $.ajax({
             url: url,
             type: 'GET',
@@ -907,7 +916,8 @@ $(document).ready(function () {
 
     // Fills in the global metrics object
     function fillMetrics(response) {
-        if (response !== null) {
+    	console.log(response);
+        if (response !== null && response !== 'null') {
             var metrics = $.parseJSON(response);
             for (var i = 0; i < metrics.length; i++) {
                 var metricArray = {};
@@ -925,7 +935,7 @@ $(document).ready(function () {
                 AIRLINE_METRICS[airlineCode] = metricArray;
                 $('#metrics-header .updated-date-time').html(getDate());
             }
+            switchMetrics('AS');
         }
-        switchMetrics('AS');
     }
 });
