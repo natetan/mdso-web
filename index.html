@@ -20,7 +20,8 @@
 
 	<body>
 
-		<div id="main">
+		<!-- Main page container -->
+		<div id="main-container">
 
 			<!-- Main content start -->
 			<div id="main-content">
@@ -211,11 +212,17 @@
 						</div>
 						<!-- Dropdown left end -->
 						
-						<div class="option-item option-button">
+						<div class="option-item option-button" id="positive-button-area">
+							<div>
+								<label for="template-dropdown" class="labels placeholder">Placeholder</label>
+							</div>
 							<button type="submit" id="positive-button" class="btn buttons"><span class="button-text">CREATE NEW</span></button>
 						</div>
 						
-						<div class="option-item option-button">
+						<div class="option-item option-button" id="negative-button-area">
+							<div>
+								<label for="template-dropdown" class="labels placeholder">Placeholder</label>
+							</div>
 							<button disabled="true" type="submit" id="negative-button" class="btn buttons"><span class="button-text">CANCEL</span></button>
 						</div>
 					</div>
@@ -231,7 +238,12 @@
 
 						<div class="form-sections">
 							<label for="comments" class="labels">IT System Status</label>
-							<textarea rows="3" name="itss" class="form-control text-area"></textarea>
+							<br>
+							<input id="green-radio" type="radio" name="status" value="green" checked> 
+							<label class="radio-labels" for="green-radio">Green</label>
+							<br>
+  							<input id="red-radio" type="radio" name="status" value="red"> 
+  							<label class="radio-labels" for="red-radio">Red</label>
 						</div>
 
 						<div class="form-sections">
@@ -281,7 +293,13 @@
 
 			<!-- Main content end -->
 
+			<!-- Modal container -->
+			<div class="modalContainer">
+
+			</div>
+			<!-- Model container end -->
 		</div>
+		<!-- Main page container end -->
 
 		<!-- jQuery (necessary for Bootstrap's JavaScript Plugins) -->
 		<script src="node_modules/jquery/dist/jquery.js"></script>

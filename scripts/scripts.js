@@ -207,8 +207,11 @@ $(document).ready(function () {
 		IN_CREATE_STATE = true;
 		$('textarea').prop('disabled', true);
 		$(this).prop('disabled', true);
-		fillInFields($('.active span').html());
+
+		var airlineCode = $('.active span').html();
+		fillInFields(airlineCode);
 		enableDropdowns(true);
+		$('#date-picker').val(CURRENT_DATE[airlineCode]);
     }
 
     // Submits the document as a whole to the database
@@ -219,6 +222,8 @@ $(document).ready(function () {
     	} else {
 	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
 	        alert('Posted document is in the console');
+	        createModal('submitModal', 'Success!', 'Document successfully posted to database');
+	        $('#submitModal').modal();
 	    }
         $(this).prop('disabled', true);
     }
@@ -226,23 +231,31 @@ $(document).ready(function () {
     // Checks if fields are verified
     function verifyFields() {
     	var textareas = $('textarea');
+    	document.getElementById('date-picker').valueAsDate = new Date();
     	// If the create button is enabled, textfields should still be disabled
     	if (IN_CREATE_STATE) {
     		$(this).prop('disabled', true);
     		$('#positive-button span').html('SAVE');
     		IN_CREATE_STATE = false;
+
     		textareas.prop('disabled', false);
     		$('#negative-button').prop('disabled', false);
+    		$('.radio-button').prop('disabled', false);
+
     		enableDropdowns(false);
     	} else {
     		$('#positive-button span').html('CREATE NEW');
+
+    		textareas.prop('disabled', true);
     		$('#negative-button').prop('disabled', true);
+    		$('.radio-button').prop('disabled', true);
+
     		enableDropdowns(true);
     		IN_CREATE_STATE = true;
-    		textareas.prop('disabled', true);
 
 	        var date = new Date();
 	        var airlineCode = $('.active span').html();
+	        CURRENT_DATE[airlineCode] = $('#date-picker').val();
 	        var jsonObject = {
 	            'Status': 0,
 	            'AirlineCode': airlineCode,
@@ -253,6 +266,18 @@ $(document).ready(function () {
 	        };
 	        var errorMessage = 'Fields not verified:\n\n';
 	        var isValid = true;
+
+	        // Add radio button to json
+	        var $greenRadio = $('#green-radio');
+	        var $redRadio = $('#red-radio');
+	        if ($greenRadio.length !== 0 || $redRadio.length !== 0) {
+	        	var manualDataFields = {};
+	        	manualDataFields['FieldName'] = $greenRadio.parent().find('label').first().html();
+	        	manualDataFields['FieldKey'] = 'itss';
+	        	manualDataFields['FieldValue'] = $greenRadio.is(':checked') ? $greenRadio.val() : $redRadio.val();
+	        	jsonObject['ManualDataList'].push(manualDataFields);
+	        }
+
 	        for (var i = 0; i < textareas.length; i++) {
 	            var $this = $(textareas[i]);
 	            var name = $this.attr('name');
@@ -262,35 +287,22 @@ $(document).ready(function () {
 	                isValid = false;
 	            }
 	            AIRLINES_VERIFIED[airlineCode] = true;
-	            var newJsonField = {};
-	            newJsonField['FieldName'] = $this.parent().find('label').html();
-	            newJsonField['FieldKey'] = name;
-	            newJsonField['FieldValue'] = value;
-	            jsonObject['ManualDataList'].push(newJsonField);
+	            var manualDataFields = {};
+	            manualDataFields['FieldName'] = $this.parent().find('label').html();
+	            manualDataFields['FieldKey'] = name;
+	            manualDataFields['FieldValue'] = value;
+	            jsonObject['ManualDataList'].push(manualDataFields);
 	        }
-	        // if (!isValid) {
-	        //     alert('Not all fields are complete');
-	        // } else {
+            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
 
-	            // This ensures that the data is pushed to the right tab, and prevents duplicates by replacing the old data
-	            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
+            $('.active div').addClass('check-mark-image');
 
-	            $('.active div').addClass('check-mark-image');
-
-	            if (USE_LIVE_DATA) {
-	            	AIRLINE_MANUAL_DATA[airlineCode] = jsonObject['ManualDataList'];
-	            } else {
-	            	SAVED_VERIFIED_DATA[airlineCode] = jsonObject['ManualDataList'];
-	            }
-
-	            // console.log(JSON.stringify(SAVED_VERIFIED_DATA, null, ' '));
-
-	            // Enables submit button if everything is verified
-	            // if (everythingIsVerified()) {
-	                $('#submit-button').prop('disabled', false);
-	            // }
-	            // console.log('AirlineStatus: ' + JSON.stringify(jsonObject, null, ' '));
-	        // }
+            if (USE_LIVE_DATA) {
+            	AIRLINE_MANUAL_DATA[airlineCode] = jsonObject['ManualDataList'];
+            } else {
+            	SAVED_VERIFIED_DATA[airlineCode] = jsonObject['ManualDataList'];
+            }
+            $('#submit-button').prop('disabled', false);
 	    }
     }
 
@@ -307,7 +319,6 @@ $(document).ready(function () {
 
     // Fills in the fields with the data they're verified with
     function fillInFields(airlineCode) {
-    	console.log('Filling in fields for: ' + airlineCode);
     	var fields = null;
 
     	if (USE_LIVE_DATA) {
@@ -331,32 +342,99 @@ $(document).ready(function () {
         	$formGroup.html('');
         	for (var i = 0; i < fields.length; i++) {
         		var currentField = fields[i];
+        		var fieldName = currentField['FieldName'];
+        		var fieldKey = currentField['FieldKey'];
+        		var fieldValue = currentField['FieldValue'];
 
         		var $formSectionDiv = $(document.createElement('div'));
         		var $nameLabel = $(document.createElement('label'));
-        		var $textarea = $(document.createElement('textarea'));
-
-        		$formSectionDiv.addClass('form-sections');
 
         		$nameLabel.addClass('labels');
-        		$nameLabel.html(currentField['FieldName']);
+        		$nameLabel.html(fieldName);
 
-        		$textarea.prop({
-        			rows: '3',
-        			name: currentField['FieldKey'],
-        			disabled: true,
-        			maxLength: 256,
-        			value: currentField['FieldValue']
-        		});
-        		$textarea.addClass('form-control text-area');
-
+        		$formSectionDiv.addClass('form-sections');
         		$formSectionDiv.append($nameLabel);
-        		$formSectionDiv.append($textarea);
+
+        		// If it is it system status, use radio button instead
+        		if (fieldKey.toLowerCase().trim() == 'itss' || fieldName.toLowerCase().trim() == 'it system status') {
+        			var $br1 = $(document.createElement('br'));
+        			var $br2 = $(document.createElement('br'));
+
+        			var $inputGreen = $(document.createElement('input'));
+        			var $inputRed = $(document.createElement('input'));
+
+        			var $labelGreen = $(document.createElement('label'));
+        			var $labelRed = $(document.createElement('label'));
+
+        			var isGreen = false;
+        			var isRed = false;
+
+        			if (fieldValue.toLowerCase() == 'green') {
+        				isGreen = true;
+        			} else {
+        				isRed = true;
+        			}
+
+        			$inputGreen.prop({
+        				id: 'green-radio',
+        				class: 'radio-button',
+        				type: 'radio',
+        				name: 'status',
+        				value: 'green',
+        				disabled: true,
+        				checked: isGreen
+        			});
+
+        			$inputRed.prop({
+        				id: 'red-radio',
+        				class: 'radio-button',
+        				type: 'radio',
+        				name: 'status',
+        				value: 'red',
+        				disabled: true,
+        				checked: isRed
+        			});
+
+        			$labelGreen.prop({
+        				class: 'radio-label',
+        				for: 'green-radio'
+        			});
+        			$labelGreen.html('Green');
+
+        			$labelRed.prop({
+        				class: 'radio-label',
+        				for: 'red-radio'
+        			});
+        			$labelRed.html('Red');
+
+        			$formSectionDiv.append($br1);
+        			$formSectionDiv.append($inputGreen);
+        			$formSectionDiv.append($labelGreen);
+        			$formSectionDiv.append($br2);
+        			$formSectionDiv.append($inputRed);
+        			$formSectionDiv.append($labelRed);
+
+        		} else {
+	        		var $textarea = $(document.createElement('textarea'));
+	        		$textarea.prop({
+	        			rows: '3',
+	        			name: fieldKey,
+	        			disabled: true,
+	        			maxLength: 256,
+	        			value: fieldValue
+	        		});
+	        		$textarea.addClass('form-control text-area');
+	        		$formSectionDiv.append($textarea);
+	        	}
 
         		$formGroup.append($formSectionDiv);
-
         	}
         }
+
+        // Radio label events
+        $('.radio-button').on('change', function() {
+        	$('#positive-button').prop('disabled', false);
+        });
 
         // Textarea events
 	    $('textarea').bind({
@@ -419,7 +497,10 @@ $(document).ready(function () {
     // Switches the metrics based on the airlineCode provided
     function switchMetrics(airlineCode) {
         var metrics = AIRLINE_METRICS[airlineCode];
-        if (metrics !== null) {
+        if (metrics !== null && airlineCode !== 'KS') {
+        	$('#metrics-area').css({
+	    		'display': 'initial'
+	    	});
 	        var metricsArea = $('#metrics-data');
 	        metricsArea.html('');
 	        var count = 0;
@@ -456,7 +537,12 @@ $(document).ready(function () {
 	        });
 
 	        colorTheMetrics();
+	    } else {
+	    	$('#metrics-area').css({
+	    		'display': 'none'
+	    	});
 	    }
+	    $('#metrics-header .loader').removeClass('loader');
     }
 
     // Colors the metrics green or red depending on the goal status
@@ -482,7 +568,6 @@ $(document).ready(function () {
                 });
             }
         }
-        $('#metrics-header .loader').removeClass('loader');
     }
 
     /*************************************************************************************
@@ -520,7 +605,9 @@ $(document).ready(function () {
             switchMetrics(airlineCode);
             switchAirlineData(airlineCode);
         } else {
-        	alert('You are in edit mode. Cannot perform action');
+        	// alert('You are in edit mode. Cannot perform action');
+        	createModal('editModeModal', 'Unable to switch tabs', 'You are currently in edit mode. Please save or cancel before continuing.');
+        	$('#editModeModal').modal();
         }
     }
 
@@ -540,7 +627,7 @@ $(document).ready(function () {
         	formattedDate = new Date(0);
         	formattedDate.setUTCSeconds(milliseconds);
         }
-        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString();
+        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString('en-GB');
     }
 
     // Enables dropdowns if true and false otherwise
@@ -578,6 +665,89 @@ $(document).ready(function () {
     	fillInFields(airlineCode);
     }
 
+    function createModal(id, title = 'alert', body = 'error', close = 'Close') {
+    	$modalContainer = $('.modalContainer');
+
+    	// Create
+    	var $modalType = $(document.createElement('div'));
+    	var $modalDialog = $(document.createElement('div'));
+    	var $modalContent = $(document.createElement('div'));
+    	var $modalHeader = $(document.createElement('div'));
+    	var $modalBody = $(document.createElement('div'));
+    	var $modalFooter = $(document.createElement('div'));
+
+    	var $modalHeaderButton = $(document.createElement('button'));
+    	var $modalFooterButton = $(document.createElement('button'));
+
+    	var $modalHeaderTitle = $(document.createElement('h4'));
+
+    	var $modalBodyParagraph = $(document.createElement('p'));
+
+    	// Change
+    	$modalType.prop({
+    		class: 'modal fade',
+    		id: id,
+    		role: 'dialog'
+    	});
+    	$modalDialog.addClass('modal-dialog');
+    	$modalContent.addClass('modal-content');
+    	$modalHeader.addClass('modal-header');
+    	$modalBody.addClass('modal-body');
+    	$modalFooter.addClass('modal-footer');
+
+    	$modalHeaderButton.prop({
+    		type: 'button',
+    		class: 'close',
+    	});
+    	$modalHeaderButton.data('dismiss', 'modal');
+    	$modalHeaderButton.html('&times;');
+    	$modalHeaderButton.click(function() {
+    		closeModal(id);
+    	});
+
+    	$modalFooterButton.prop({
+    		type: 'button',
+    		class: 'btn btn-default',
+    	});
+    	$modalFooterButton.data('dismiss', 'modal');
+    	$modalFooterButton.html(close);
+    	$modalFooterButton.click(function() {
+    		closeModal(id);
+    	});
+
+    	$modalHeaderTitle.addClass('modal-title');
+    	$modalHeaderTitle.html(title);
+
+    	$modalBodyParagraph.html(body);
+
+    	// Append
+    	$modalHeader.append($modalHeaderButton);
+    	$modalHeader.append($modalHeaderTitle);
+
+    	$modalBody.append($modalBodyParagraph);
+
+    	$modalFooter.append($modalFooterButton);
+
+    	$modalContent.append($modalHeader);
+    	$modalContent.append($modalBody);
+    	$modalContent.append($modalFooter);
+
+    	$modalDialog.append($modalContent);
+
+    	$modalType.append($modalDialog);
+
+    	$modalContainer.append($modalType);
+    	$('#main-container').append($modalContainer);
+    }
+
+    function closeModal(id) {
+    	var $currentModal = $('#' + id);
+    	$currentModal.modal('hide');
+    	setTimeout(function() {
+    		$currentModal.remove();
+    	}, 1000);
+    }
+
     function setGlobals(airlineCode, withObject) {
     	AIRLINE_TIMESTAMP[airlineCode] = withObject['Timestamp'];
 		AIRLINE_MANUAL_DATA[airlineCode] = withObject['ManualDataList'];
@@ -592,8 +762,8 @@ $(document).ready(function () {
     *************************************************************************************/
 
     // Gets all the documents in the database
-    function getDocuments() {
-        getRequest('/RestClient/GetAllDocuments', getAllDocuments);
+    function getAllDocuments(callback) {
+        getRequest('/RestClient/GetAllDocuments', callback);
     }
 
     // Gets the most recent document
@@ -659,18 +829,9 @@ $(document).ready(function () {
     *																					 *
     *************************************************************************************/
 
-    // Gets all the documents from the database
-    function getAllDocuments(response) {
-        if (response !== null) {
-            alert('Get data is logged into the console.');
-            console.log('Response: ' + response);
-        }
-    }
-
     function fillSpecifiedAirline(response) {
     	var airlineCode = $('.active span').html();
     	var template = $('#template-dropdown').val();
-    	console.log('Current temp: ' + template);
 		var date = $('#date-picker').val();
     	if (response !== null && response !== 'null') {
     		var documents = $.parseJSON(response);
@@ -689,16 +850,22 @@ $(document).ready(function () {
     				}
     			}
     		}
-    		switchAirlineData('AS');
+    		switchAirlineData(airlineCode);
 
     		// Sets the values of the dropdowns, so user can switch again from that state
     		if (keepGoing) {
     			$('#template-dropdown').prop('value', template);
     			$('#date-picker').prop('value', date);
-    			alert('No ' + template + ' template found on ' + date + ' for ' + airlineCode);
+    			createModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.');
+    			$('#noTempModal').modal();
+    			// Calls this function again, but with different data
+    			getAllDocuments(fillSpecifiedAirline);
+
     		}
     	} else {
-    		alert('No documents found on ' + date + ' for ' + airlineCode);
+    		// alert('No documents found on ' + date + ' for ' + airlineCode);
+    		createModal('noDocsModal', 'No data available', 'No documents found on ' + date);
+    		$('#noDocsModal').modal();
     	}
     	$('#option-headers div').removeClass('loader');
     }
