@@ -86,6 +86,7 @@ $(document).ready(function () {
     // Otherwise, log posted document to console
     var REAL_POST = true;
 
+    // True if using live data
     var USE_LIVE_DATA = true;
 
     /*************************************************************************************
@@ -223,7 +224,6 @@ $(document).ready(function () {
 	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
 	        alert('Posted document is in the console');
 	        createModal('submitModal', 'Success!', 'Document successfully posted to database');
-	        $('#submitModal').modal();
 	    }
         $(this).prop('disabled', true);
     }
@@ -264,8 +264,6 @@ $(document).ready(function () {
 	            'Template': $('#template-dropdown').val(),
 	            'ManualDataList': []
 	        };
-	        var errorMessage = 'Fields not verified:\n\n';
-	        var isValid = true;
 
 	        // Add radio button to json
 	        var $greenRadio = $('#green-radio');
@@ -277,15 +275,10 @@ $(document).ready(function () {
 	        	manualDataFields['FieldValue'] = $greenRadio.is(':checked') ? $greenRadio.val() : $redRadio.val();
 	        	jsonObject['ManualDataList'].push(manualDataFields);
 	        }
-
 	        for (var i = 0; i < textareas.length; i++) {
 	            var $this = $(textareas[i]);
 	            var name = $this.attr('name');
 	            var value = $this.val();
-	            if (value === null || value === '' || value === undefined) {
-	                errorMessage += name + '\n';
-	                isValid = false;
-	            }
 	            AIRLINES_VERIFIED[airlineCode] = true;
 	            var manualDataFields = {};
 	            manualDataFields['FieldName'] = $this.parent().find('label').html();
@@ -607,7 +600,6 @@ $(document).ready(function () {
         } else {
         	// alert('You are in edit mode. Cannot perform action');
         	createModal('editModeModal', 'Unable to switch tabs', 'You are currently in edit mode. Please save or cancel before continuing.');
-        	$('#editModeModal').modal();
         }
     }
 
@@ -647,14 +639,17 @@ $(document).ready(function () {
     	}
     }
 
+    // Switches the template for the given airline
     function switchTemplateValue(airlineCode) {
     	$('#template-dropdown').val(CURRENT_TEMPLATE[airlineCode]);
     }
 
+    // Switches the date for the given airline
     function switchDateValue(airlineCode) {
     	$('#date-picker').val(CURRENT_DATE[airlineCode]);
     }
 
+    // Gets historical documents based on date
     function getHistoricalDocument() {
     	$('#option-headers div').addClass('loader');
     	var date = $('#date-picker').val();
@@ -662,6 +657,7 @@ $(document).ready(function () {
     	getMostRecentDocument('date=' + date + filter);
     }
 
+    // Switches airline data for the given airline
     function switchAirlineData(airlineCode) {
     	switchTimeStamp(airlineCode);
     	switchDateValue(airlineCode);
@@ -669,89 +665,93 @@ $(document).ready(function () {
     	fillInFields(airlineCode);
     }
 
+    // Creates a bootstrap modal with the given id, title, and body and then displays it
     function createModal(id, title, body) {
-    	$modalContainer = $('.modalContainer');
+    	// Only create if it doesnt exist
+    	if ($('#' + id).length === 0) {
+	     	$modalContainer = $('.modalContainer');
 
-    	// Create
-    	var $modalType = $(document.createElement('div'));
-    	var $modalDialog = $(document.createElement('div'));
-    	var $modalContent = $(document.createElement('div'));
-    	var $modalHeader = $(document.createElement('div'));
-    	var $modalBody = $(document.createElement('div'));
-    	var $modalFooter = $(document.createElement('div'));
+	    	// Create
+	    	var $modalType = $(document.createElement('div'));
+	    	var $modalDialog = $(document.createElement('div'));
+	    	var $modalContent = $(document.createElement('div'));
+	    	var $modalHeader = $(document.createElement('div'));
+	    	var $modalBody = $(document.createElement('div'));
+	    	var $modalFooter = $(document.createElement('div'));
 
-    	var $modalHeaderButton = $(document.createElement('button'));
-    	var $modalFooterButton = $(document.createElement('button'));
+	    	var $modalHeaderButton = $(document.createElement('button'));
+	    	var $modalFooterButton = $(document.createElement('button'));
 
-    	var $modalHeaderTitle = $(document.createElement('h4'));
+	    	var $modalHeaderTitle = $(document.createElement('h4'));
 
-    	var $modalBodyParagraph = $(document.createElement('p'));
+	    	var $modalBodyParagraph = $(document.createElement('p'));
 
-    	// Change
-    	$modalType.prop({
-    		class: 'modal fade',
-    		id: id,
-    		role: 'dialog'
-    	});
-    	$modalDialog.addClass('modal-dialog');
-    	$modalContent.addClass('modal-content');
-    	$modalHeader.addClass('modal-header');
-    	$modalBody.addClass('modal-body');
-    	$modalFooter.addClass('modal-footer');
+	    	// Change
+	    	$modalType.prop({
+	    		class: 'modal fade',
+	    		id: id,
+	    		role: 'dialog'
+	    	});
+	    	$modalDialog.addClass('modal-dialog');
+	    	$modalContent.addClass('modal-content');
+	    	$modalHeader.addClass('modal-header');
+	    	$modalBody.addClass('modal-body');
+	    	$modalFooter.addClass('modal-footer');
 
-    	$modalHeaderButton.prop({
-    		type: 'button',
-    		class: 'close',
-    	});
-    	$modalHeaderButton.data('dismiss', 'modal');
-    	$modalHeaderButton.html('&times;');
-    	$modalHeaderButton.click(function() {
-    		closeModal(id);
-    	});
+	    	$modalHeaderButton.prop({
+	    		type: 'button',
+	    		class: 'close',
+	    	});
+	    	$modalHeaderButton.data('dismiss', 'modal');
+	    	$modalHeaderButton.html('&times;');
+	    	$modalHeaderButton.click(function() {
+	    		closeModal(id);
+	    	});
 
-    	$modalFooterButton.prop({
-    		type: 'button',
-    		class: 'btn btn-default',
-    	});
-    	$modalFooterButton.data('dismiss', 'modal');
-    	$modalFooterButton.html('Close');
-    	$modalFooterButton.click(function() {
-    		closeModal(id);
-    	});
+	    	$modalFooterButton.prop({
+	    		type: 'button',
+	    		class: 'btn btn-default',
+	    	});
+	    	$modalFooterButton.data('dismiss', 'modal');
+	    	$modalFooterButton.html('Close');
+	    	$modalFooterButton.click(function() {
+	    		closeModal(id);
+	    	});
 
-    	$modalHeaderTitle.addClass('modal-title');
-    	$modalHeaderTitle.html(title);
+	    	$modalHeaderTitle.addClass('modal-title');
+	    	$modalHeaderTitle.html(title);
 
-    	$modalBodyParagraph.html(body);
+	    	$modalBodyParagraph.html(body);
 
-    	// Append
-    	$modalHeader.append($modalHeaderButton);
-    	$modalHeader.append($modalHeaderTitle);
+	    	// Append
+	    	$modalHeader.append($modalHeaderButton);
+	    	$modalHeader.append($modalHeaderTitle);
 
-    	$modalBody.append($modalBodyParagraph);
+	    	$modalBody.append($modalBodyParagraph);
 
-    	$modalFooter.append($modalFooterButton);
+	    	$modalFooter.append($modalFooterButton);
 
-    	$modalContent.append($modalHeader);
-    	$modalContent.append($modalBody);
-    	$modalContent.append($modalFooter);
+	    	$modalContent.append($modalHeader);
+	    	$modalContent.append($modalBody);
+	    	$modalContent.append($modalFooter);
 
-    	$modalDialog.append($modalContent);
+	    	$modalDialog.append($modalContent);
 
-    	$modalType.append($modalDialog);
+	    	$modalType.append($modalDialog);
 
-    	$modalContainer.append($modalType);
-    	$('#main-container').append($modalContainer);
+	    	$modalContainer.append($modalType);
+	    	$('#main-container').append($modalContainer);
+	    }
+	    $('#' + id).modal();
     }
 
+    // Closes the modal on close
     function closeModal(id) {
     	var $currentModal = $('#' + id);
     	$currentModal.modal('hide');
-    	setTimeout(function() {
-    		$currentModal.remove();
-    	}, 1000);
     }
 
+    // Sets some common global variables for the given airline
     function setGlobals(airlineCode, withObject) {
     	AIRLINE_TIMESTAMP[airlineCode] = withObject['Timestamp'];
 		AIRLINE_MANUAL_DATA[airlineCode] = withObject['ManualDataList'];
@@ -838,13 +838,13 @@ $(document).ready(function () {
     *																					 *
     *************************************************************************************/
 
+    // Fills the manual data for the given airline with the template and date selected
     function fillSpecifiedAirline(response) {
     	var airlineCode = $('.active span').html();
     	var template = $('#template-dropdown').val();
 		var date = $('#date-picker').val();
     	if (response !== null && response !== 'null') {
     		var documents = $.parseJSON(response);
-
     		var keepGoing = true;
     		for (var i = documents.length - 1; i >= 0 && keepGoing; i--) {
     			var currentDocument = documents[i];
@@ -860,13 +860,11 @@ $(document).ready(function () {
     			}
     		}
     		switchAirlineData(airlineCode);
-
     		// Sets the values of the dropdowns, so user can switch again from that state
     		if (keepGoing) {
     			$('#template-dropdown').prop('value', template);
     			$('#date-picker').prop('value', date);
     			createModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.');
-    			$('#noTempModal').modal();
     			// Calls this function again, but with different data
     			getAllDocuments(fillSpecifiedAirline);
 
@@ -874,7 +872,6 @@ $(document).ready(function () {
     	} else {
     		// alert('No documents found on ' + date + ' for ' + airlineCode);
     		createModal('noDocsModal', 'No data available', 'No documents found on ' + date);
-    		$('#noDocsModal').modal();
     	}
     	$('#option-headers div').removeClass('loader');
     }
@@ -891,32 +888,16 @@ $(document).ready(function () {
     		for (var i = 0; i < airlines.length; i++) {
     			var currentAirline = airlines[i];
     			var airlineCode = currentAirline['AirlineCode'];
-
     			setGlobals(airlineCode, currentAirline);
-
-    			// var boolString = currentAirline['Verified'];
-    			// var bool = false;
-    			// if (boolString == 'True') {
-    			// 	bool = true;
-    			// }
-    			// AIRLINES_VERIFIED[airlineCode] = bool;
     		}
     	} else {
     		alert('No documents posted on ' + $('#date-picker').val());
     	}
-    	// for (airline in AIRLINES_VERIFIED) {
-    	// 	console.log(AIRLINES_VERIFIED[airline]);
-    	// 	if (AIRLINES_VERIFIED[airline]) {
-    	// 		var id = '#check-mark-' + airline;
-    	// 		$(id).addClass('check-mark-image');
-    	// 	}
-    	// }
     	switchAirlineData('AS');
     }
 
     // Fills in the global metrics object
     function fillMetrics(response) {
-    	console.log(response);
         if (response !== null && response !== 'null') {
             var metrics = $.parseJSON(response);
             for (var i = 0; i < metrics.length; i++) {
