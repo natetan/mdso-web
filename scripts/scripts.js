@@ -116,7 +116,7 @@ $(document).ready(function () {
     });
 
     // Sets the date to today on start
-    document.getElementById('date-picker').valueAsDate = new Date();
+
 
     // Date for the current metrics
     $('#metrics-header .updated-date-time').html(getDate());
@@ -137,6 +137,7 @@ $(document).ready(function () {
 
     // Changes the document based on the selected date
     $('#date-picker').on('change', getHistoricalDocument);
+    $('#date-picker').datepicker();
 
     // Updates which airline tab is selected
     $('.tab-item').on('click', updateActive);
