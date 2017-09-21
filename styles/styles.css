@@ -223,7 +223,7 @@ button:disabled {
 }
 
 .metric-percent {
-	color: #48850b;
+	color: #3c3b3f;
 	font-size: 16px;
 	font-weight: bold;
 }
@@ -322,19 +322,19 @@ button:disabled {
 	appearance: none;
 }
 
-#date-picker:enabled {
+#datepicker:enabled {
 	background: url('../Assets/calendar_icon.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
-#date-picker:disabled {
+#datepicker:disabled {
 	background: url('../Assets/calendar_icon_inactive.png') no-repeat 97% 50% #ffffff;
 	background-size: 20px 20px;
 }
 
 /* Removes clear button and inner spin button */
-#date-picker::-webkit-inner-spin-button, 
-#date-picker::-webkit-clear-button {
+#datepicker::-webkit-inner-spin-button, 
+#datepicker::-webkit-clear-button {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
@@ -342,12 +342,12 @@ button:disabled {
 }
 
 /* Date picker clear for IE */
-#date-picker::-ms-clear {
+#datepicker::-ms-clear {
 	display: none;
 }
 
 /* Removes display picker indicator */
-#date-picker::-webkit-calendar-picker-indicator {
+#datepicker::-webkit-calendar-picker-indicator {
 	opacity: 0;
 }
 
@@ -374,6 +374,10 @@ button:disabled {
 
 .form-sections {
 	margin-bottom: 1.5%;
+}
+
+.hide {
+	display: none;
 }
 
 /* Smartphones (portrait and landscape) ----------- */
@@ -429,10 +433,6 @@ button:disabled {
 		width: 150px;
 	}
 
-	.option-button button {
-		margin-top: 2.5%;
-	}
-
 	.form-sections {
 		margin-bottom: 3%;
 	}
@@ -465,10 +465,6 @@ button:disabled {
 	.options-dropdown input,
 	.buttons {
 		width: 175px;
-	}
-
-	.option-button button {
-		margin-top: 2%;
 	}
 }
 

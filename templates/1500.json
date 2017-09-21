@@ -3,7 +3,7 @@
         {
             "Status": 0,
             "AirlineCode": "AS",
-            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
+            "Timestamp": "Fri Sep 8 2017 3:00:47 PM",
             "UserId": "BATCH",
             "Template": "1500",
             "ManualDataList": [
@@ -62,7 +62,7 @@
         {
             "Status": 0,
             "AirlineCode": "VX",
-            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
+            "Timestamp": "Fri Sep 8 2017 3:00:47 PM",
             "UserId": "BATCH",
             "Template": "1500",
             "ManualDataList": [
@@ -121,7 +121,7 @@
         {
             "Status": 0,
             "AirlineCode": "QX",
-            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
+            "Timestamp": "Fri Sep 8 2017 3:00:47 PM",
             "UserId": "BATCH",
             "Template": "1500",
             "ManualDataList": [
@@ -180,7 +180,7 @@
         {
             "Status": 0,
             "AirlineCode": "OO",
-            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
+            "Timestamp": "Fri Sep 8 2017 3:00:47 PM",
             "UserId": "BATCH",
             "Template": "1500",
             "ManualDataList": [
@@ -224,7 +224,7 @@
         {
             "Status": 0,
             "AirlineCode": "KS",
-            "Timestamp": "Wed Aug 16 2017 4:25:50 PM",
+            "Timestamp": "Fri Sep 8 2017 3:00:47 PM",
             "UserId": "BATCH",
             "Template": "1500",
             "ManualDataList": [

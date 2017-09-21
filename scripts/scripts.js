@@ -64,11 +64,11 @@ $(document).ready(function () {
     }
 
     var CURRENT_TEMPLATE = {
-    	'AS': 0930,
-        'VX': 0930,
-        'QX': 0930,
-        'OO': 0930,
-        'KS': 0930
+    	'AS': null,
+        'VX': null,
+        'QX': null,
+        'OO': null,
+        'KS': null
     }
 
     var CURRENT_DATE = {
@@ -82,12 +82,25 @@ $(document).ready(function () {
     // Keeps track of the state of the positive button and fields
     var IN_CREATE_STATE = true;
 
+    var CURRENT_INITIAL_TEMPLATE = '0500';
+
     // Change to true to post to database
     // Otherwise, log posted document to console
     var REAL_POST = true;
 
     // True if using live data
     var USE_LIVE_DATA = true;
+
+    /* 
+    QUICK FIX for fillSpecifiedAirline to not get stuck in inifnite loop
+    The flow of the issue:
+    	Let's say the only document in the database is a 0500 template for AS
+    	Switching the template dropdown to 930 means it tries to find that with
+    	the most recent document. None will be found, so it calls the getAllDocuments
+    	with the same callback. The response is not null, so it goes through that again,
+    	calling getAllDocuments again at the end.
+    */
+    var KEEP_GOING = true;
 
     /*************************************************************************************
     *																					 *
@@ -109,20 +122,17 @@ $(document).ready(function () {
     $('#form-group').data('serialize', $('#form-group').serialize()); // On load save form current state
     $(window).on('beforeunload', function(e) {
     	if ($('#form-group').serialize() != $('#form-group').data('serialize')) {
-            return true;
+            return 'Changes you make can be lost';
         } else {
             e = null; // i.e; if form state change show warning box, else don't show it.
         }
     });
 
-    // Sets the date to today on start
-
-
     // Date for the current metrics
     $('#metrics-header .updated-date-time').html(getDate());
 
     // Date for the date label
-    $('#option-headers .updated-date-time').html(getDate());
+    $('#option-headers .updated-date-time').html('No report found');
 
     // Verify the fields
     $('#positive-button').on('click', verifyFields);
@@ -134,18 +144,21 @@ $(document).ready(function () {
     $('#submit-button').on('click', submit);
 
     $('#template-dropdown').on('change', getHistoricalDocument);
-
+    
     // Changes the document based on the selected date
-    $('#date-picker').on('change', getHistoricalDocument);
-    $('#date-picker').datepicker();
+    $('#datepicker').on('change', getHistoricalDocument);
+    // Sets the jqueryui datepicker to the input
+    var datepicker = $('#datepicker').datepicker();
+    // $('#datepicker').datepicker('option', 'dateFormat', 'm/dd/yy');
+    $('#datepicker').val(convertToDisplayDate(new Date()));
+    // Sets the datepicker input area to be readonly
+    $('#datepicker').prop('readOnly', true);
 
     // Updates which airline tab is selected
     $('.tab-item').on('click', updateActive);
 
     // Sets max character limit for text area
     $('textarea').prop('maxLength', 256);
-
-
 
     /*************************************************************************************
     *																					 *
@@ -213,7 +226,7 @@ $(document).ready(function () {
 		var airlineCode = $('.active span').html();
 		fillInFields(airlineCode);
 		enableDropdowns(true);
-		$('#date-picker').val(CURRENT_DATE[airlineCode]);
+		$('#datepicker').val(formatFromISODate(CURRENT_DATE[airlineCode]));
     }
 
     // Submits the document as a whole to the database
@@ -223,8 +236,6 @@ $(document).ready(function () {
     		removeCheckMarks();
     	} else {
 	        console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
-	        alert('Posted document is in the console');
-	        createModal('submitModal', 'Success!', 'Document successfully posted to database');
 	    }
         $(this).prop('disabled', true);
     }
@@ -232,7 +243,7 @@ $(document).ready(function () {
     // Checks if fields are verified
     function verifyFields() {
     	var textareas = $('textarea');
-    	document.getElementById('date-picker').valueAsDate = new Date();
+    	$('#datepicker').val(convertToDisplayDate(new Date()));
     	// If the create button is enabled, textfields should still be disabled
     	if (IN_CREATE_STATE) {
     		$(this).prop('disabled', true);
@@ -256,7 +267,8 @@ $(document).ready(function () {
 
 	        var date = new Date();
 	        var airlineCode = $('.active span').html();
-	        CURRENT_DATE[airlineCode] = $('#date-picker').val();
+	        CURRENT_DATE[airlineCode] = convertToAPIAcceptedDate(new Date($('#datepicker').val()));
+	        console.log(CURRENT_DATE[airlineCode]);
 	        var jsonObject = {
 	            'Status': 0,
 	            'AirlineCode': airlineCode,
@@ -453,11 +465,9 @@ $(document).ready(function () {
 
 	        // Prevents pasting emojis
 	        paste: function (e) {
-	            console.log('inside paste');
 	            var $currentTextArea = $(this);
 	            setTimeout(function () {
 	                var text = $currentTextArea.val();
-	                console.log('is emoji? ' + isEmoji(text));
 	                text = replaceEmojis(text, '\ufffd');
 	                $currentTextArea.prop('value', text);
 	            }, 10);
@@ -492,9 +502,7 @@ $(document).ready(function () {
     function switchMetrics(airlineCode) {
         var metrics = AIRLINE_METRICS[airlineCode];
         if (metrics !== null && airlineCode !== 'KS') {
-        	$('#metrics-area').css({
-	    		'display': 'initial'
-	    	});
+        	$('#metrics-area').removeClass('hide');
 	        var metricsArea = $('#metrics-data');
 	        metricsArea.html('');
 	        var count = 0;
@@ -502,23 +510,23 @@ $(document).ready(function () {
 	            var $metricsObjectDiv = $(document.createElement('div'));
 	            var $metricsTypeSpan = $(document.createElement('span'));
 	            var $metricsPercentSpan = $(document.createElement('span'));
-	            var $metricsGoalSpan = $(document.createElement('span'));
+	            // var $metricsGoalSpan = $(document.createElement('span'));
 
 	            $metricsObjectDiv.addClass('metrics-object');
 	            $metricsTypeSpan.addClass('metric-type');
 	            $metricsPercentSpan.addClass('metric-percent');
-	            $metricsGoalSpan.addClass('metric-goal');
+	            // $metricsGoalSpan.addClass('metric-goal');
 
 	            $metricsTypeSpan.html(Object.keys(metrics)[count]);
-	            $metricsPercentSpan.html(metrics[metric]);
-	            $metricsGoalSpan.data('goal', 75);
-	            $metricsGoalSpan.html('(' + $metricsGoalSpan.data('goal') + '%)');
+	            $metricsPercentSpan.html(metrics[metric] + '%');
+	            // $metricsGoalSpan.data('goal', 75);
+	            // $metricsGoalSpan.html('(' + $metricsGoalSpan.data('goal') + '%)');
 
 	            $metricsObjectDiv.append($metricsTypeSpan);
 	            $metricsObjectDiv.append('<br>');
 	            $metricsObjectDiv.append($metricsPercentSpan);
 	            $metricsObjectDiv.append('<br>');
-	            $metricsObjectDiv.append($metricsGoalSpan);
+	            // $metricsObjectDiv.append($metricsGoalSpan);
 
 	            metricsArea.append($metricsObjectDiv);
 	            count++;
@@ -530,11 +538,9 @@ $(document).ready(function () {
 	        	'width': width + '%'
 	        });
 
-	        colorTheMetrics();
+	        // colorTheMetrics();
 	    } else {
-	    	$('#metrics-area').css({
-	    		'display': 'none'
-	    	});
+	    	$('#metrics-area').addClass('hide');
 	    }
 	    $('#metrics-header .loader').removeClass('loader');
     }
@@ -581,7 +587,11 @@ $(document).ready(function () {
 
     // Switches the timestamp for the given airline
     function switchTimeStamp(airlineCode) {
-    	$('#option-headers .updated-date-time').html(AIRLINE_TIMESTAMP[airlineCode]);
+    	var timestamp = AIRLINE_TIMESTAMP[airlineCode];
+    	if (timestamp == null) {
+    		timestamp = 'No report found';
+    	}
+    	$('#option-headers .updated-date-time').html(timestamp);
     }
 
     // Updates which tab gets set to active (highlighted)
@@ -600,7 +610,7 @@ $(document).ready(function () {
             switchAirlineData(airlineCode);
         } else {
         	// alert('You are in edit mode. Cannot perform action');
-        	createModal('editModeModal', 'Unable to switch tabs', 'You are currently in edit mode. Please save or cancel before continuing.');
+        	createAndDisplayModal('editModeModal', 'Unable to switch tabs', 'You are currently in edit mode. Please save or cancel before continuing.');
         }
     }
 
@@ -627,10 +637,33 @@ $(document).ready(function () {
         return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString('en-GB');
     }
 
+    // Converts date to a string in the format of mm/dd/yyyy
+    function convertToDisplayDate(date) {
+    	// return date.toLocaleDateString();
+    	return formatFromISODate(date.toISOString().substring(0, 10));
+    }
+
+    // Returns the locale date string of a date string formatted in yyyy-MM-dd
+    function formatFromISODate(dateString) {
+    	var dateArray = dateString.split('-');
+    	var month = dateArray[1];
+    	if (month.length == 2 && month[0] == '0') {
+    		month = month.substring(1);
+    	}
+    	return month + '/' + dateArray[2] + '/' + dateArray[0];
+    }
+
+    // Converts the date to a string in the format of yyyy-mm-dd
+    function convertToAPIAcceptedDate(date) {
+    	// Removes the timezone from the ISO string
+    	isoDate = new Date(date.getTime() - (date.getTimezoneOffset() * 60000)).toISOString();
+    	return isoDate.substring(0, 10);
+    }
+
     // Enables dropdowns if true and false otherwise
     function enableDropdowns(enabled) {
     	var $templateDropdown = $('#template-dropdown');
-    	var $datePicker = $('#date-picker');
+    	var $datePicker = $('#datepicker');
     	if (enabled) {
     		$templateDropdown.prop('disabled', false);
     		$datePicker.prop('disabled', false);
@@ -642,18 +675,26 @@ $(document).ready(function () {
 
     // Switches the template for the given airline
     function switchTemplateValue(airlineCode) {
-    	$('#template-dropdown').val(CURRENT_TEMPLATE[airlineCode]);
+    	var template = CURRENT_TEMPLATE[airlineCode];
+    	if (template == null) {
+    		template = CURRENT_INITIAL_TEMPLATE;
+    	}
+    	$('#template-dropdown').val(template);
     }
 
     // Switches the date for the given airline
     function switchDateValue(airlineCode) {
-    	$('#date-picker').val(CURRENT_DATE[airlineCode]);
+    	var date = CURRENT_DATE[airlineCode];
+    	if (date == null) {
+    		date = new Date().toISOString().substring(0, 10);
+    	}
+    	$('#datepicker').val(formatFromISODate(date));
     }
 
     // Gets historical documents based on date
     function getHistoricalDocument() {
     	$('#option-headers div').addClass('loader');
-    	var date = $('#date-picker').val();
+    	var date = $('#datepicker').val();
     	var filter = '&filter=all';
     	getMostRecentDocument('date=' + date + filter);
     }
@@ -667,7 +708,7 @@ $(document).ready(function () {
     }
 
     // Creates a bootstrap modal with the given id, title, and body and then displays it
-    function createModal(id, title, body) {
+    function createAndDisplayModal(id, title, body) {
     	// Only create if it doesnt exist
     	if ($('#' + id).length === 0) {
 	     	$modalContainer = $('.modalContainer');
@@ -753,16 +794,16 @@ $(document).ready(function () {
     }
 
     // Sets some common global variables for the given airline
-    function setGlobals(airlineCode, withObject) {
-    	AIRLINE_TIMESTAMP[airlineCode] = withObject['Timestamp'];
-		AIRLINE_MANUAL_DATA[airlineCode] = withObject['ManualDataList'];
-		CURRENT_TEMPLATE[airlineCode] = withObject['Template'];
-		CURRENT_DATE[airlineCode] = new Date(withObject['Timestamp']).toISOString().substring(0, 10);
+    function setGlobals(airlineCode, currentAirlineObject) {
+    	AIRLINE_TIMESTAMP[airlineCode] = currentAirlineObject['Timestamp'];
+		AIRLINE_MANUAL_DATA[airlineCode] = currentAirlineObject['ManualDataList'];
+		CURRENT_TEMPLATE[airlineCode] = currentAirlineObject['Template'];
+		CURRENT_DATE[airlineCode] = convertToAPIAcceptedDate(new Date(currentAirlineObject['Timestamp']));
     }
 
     /*************************************************************************************
     *																					 *
-    * AJAX CALLS       													                 *
+    * AJAX CALLS       												  	                 *
     *																					 *
     *************************************************************************************/
 
@@ -786,6 +827,12 @@ $(document).ready(function () {
         getRequest('/RestClient/GetAirlineMetrics', fillMetrics);
     }
 
+    // Gets the templates
+    function getTemplates() {
+    	getRequest('/RestClient/GetTemplates', useInitialTemplate);
+    }
+
+    // Posts the document to the database
     function postDocument(jsonData) {
     	postRequest('RestClient/Post', jsonData);
     }
@@ -809,14 +856,13 @@ $(document).ready(function () {
             success: callback,
             data: passedData,
             error: function (req, err) {
-                console.log('Error: ' + JSON.parse(err));
+                createAndDisplayModal('errorModal', 'Error loading data', JSON.parse(err));
             }
         });
     }
 
     // Posts a new document into the database
     function postRequest(url, jsonObject) {
-        console.log('Post was clicked');
         $.ajax({
             type: 'POST',
             url: url,
@@ -825,10 +871,10 @@ $(document).ready(function () {
             processData: false,
             data: JSON.stringify(jsonObject),
             success: function (data) {
-                alert('Document posted!');
+                createAndDisplayModal('submitModal', 'Success!', 'Document successfully posted to database');
             },
             error: function (req, err) {
-                console.log('Error: ' + JSON.parse(err));
+                createAndDisplayModal('errorModal', 'Error loading data', JSON.parse(err));
             }
         });
     }
@@ -843,11 +889,12 @@ $(document).ready(function () {
     function fillSpecifiedAirline(response) {
     	var airlineCode = $('.active span').html();
     	var template = $('#template-dropdown').val();
-		var date = $('#date-picker').val();
-    	if (response !== null && response !== 'null') {
+    	CURRENT_TEMPLATE[airlineCode] = template;
+    	CURRENT_INITIAL_TEMPLATE = template;
+		var date = $('#datepicker').val();
+    	if (response !== null && response !== 'null' && KEEP_GOING) {
     		var documents = $.parseJSON(response);
-    		var keepGoing = true;
-    		for (var i = documents.length - 1; i >= 0 && keepGoing; i--) {
+    		for (var i = documents.length - 1; i >= 0 && KEEP_GOING; i--) {
     			var currentDocument = documents[i];
     			var airlines = currentDocument['data'];
     			for (var j = 0; j < airlines.length; j++) {
@@ -856,23 +903,25 @@ $(document).ready(function () {
     					var milliseconds = currentDocument['_ts'];
     					$('#option-headers .updated-date-time').html(getDate(milliseconds));
     					setGlobals(airlineCode, currentAirline);
-    					keepGoing = false;
+    					KEEP_GOING = false;
     				}
     			}
     		}
     		switchAirlineData(airlineCode);
     		// Sets the values of the dropdowns, so user can switch again from that state
-    		if (keepGoing) {
+    		if (KEEP_GOING) {
+    			KEEP_GOING = false;
     			$('#template-dropdown').prop('value', template);
-    			$('#date-picker').prop('value', date);
-    			createModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.');
+    			$('#datepicker').prop('value', date);
+    			createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.');
     			// Calls this function again, but with different data
     			getAllDocuments(fillSpecifiedAirline);
-
     		}
     	} else {
-    		// alert('No documents found on ' + date + ' for ' + airlineCode);
-    		createModal('noDocsModal', 'No data available', 'No documents found on ' + date);
+    		KEEP_GOING = true;
+    		$('#datepicker').val(convertToDisplayDate(new Date($('#datepicker').val())));
+    		createAndDisplayModal('noDocsModal', 'No data available', 'No documents found in the database. The default template will be used.');
+    		getTemplates();
     	}
     	$('#option-headers div').removeClass('loader');
     }
@@ -891,10 +940,11 @@ $(document).ready(function () {
     			var airlineCode = currentAirline['AirlineCode'];
     			setGlobals(airlineCode, currentAirline);
     		}
+    		switchAirlineData('AS');
     	} else {
-    		alert('No documents posted on ' + $('#date-picker').val());
+    		createAndDisplayModal('noDocsModal', 'No data available', 'No documents found in the database. The default template will be used.');
+    		getTemplates();
     	}
-    	switchAirlineData('AS');
     }
 
     // Fills in the global metrics object
@@ -919,5 +969,18 @@ $(document).ready(function () {
             }
             switchMetrics('AS');
         }
+    }
+
+    // Loads the initial template into the page if there is no previous data
+    function useInitialTemplate(response) {
+    	response = $.parseJSON(response); // response is an array of size 1
+    	var templates = response[0]['templates'];
+    	var airlinesInSelectedTemplate = templates[CURRENT_INITIAL_TEMPLATE];
+    	var airlineCode = $('.active span').html();
+   //  	for (airline in airlinesInSelectedTemplate) {
+			// AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+   //  	}
+   		AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
+    	fillInFields(airlineCode);
     }
 });
