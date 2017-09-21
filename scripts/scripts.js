@@ -708,7 +708,7 @@ $(document).ready(function () {
     }
 
     // Creates a bootstrap modal with the given id, title, and body and then displays it
-    function createAndDisplayModal(id, title, body) {
+    function createAndDisplayModal(id, title, body, callback) {
     	// Only create if it doesnt exist
     	if ($('#' + id).length === 0) {
 	     	$modalContainer = $('.modalContainer');
@@ -747,7 +747,7 @@ $(document).ready(function () {
 	    	$modalHeaderButton.data('dismiss', 'modal');
 	    	$modalHeaderButton.html('&times;');
 	    	$modalHeaderButton.click(function() {
-	    		closeModal(id);
+	    		closeModal(id, callback);
 	    	});
 
 	    	$modalFooterButton.prop({
@@ -757,7 +757,7 @@ $(document).ready(function () {
 	    	$modalFooterButton.data('dismiss', 'modal');
 	    	$modalFooterButton.html('Close');
 	    	$modalFooterButton.click(function() {
-	    		closeModal(id);
+	    		closeModal(id, callback);
 	    	});
 
 	    	$modalHeaderTitle.addClass('modal-title');
@@ -788,9 +788,12 @@ $(document).ready(function () {
     }
 
     // Closes the modal on close
-    function closeModal(id) {
+    function closeModal(id, callback) {
     	var $currentModal = $('#' + id);
     	$currentModal.modal('hide');
+    	if (callback) {
+    		callback();
+    	}
     }
 
     // Sets some common global variables for the given airline
@@ -913,9 +916,10 @@ $(document).ready(function () {
     			KEEP_GOING = false;
     			$('#template-dropdown').prop('value', template);
     			$('#datepicker').prop('value', date);
-    			createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.');
+    			createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function() {
+    				getAllDocuments(fillSpecifiedAirline);
+    			});
     			// Calls this function again, but with different data
-    			getAllDocuments(fillSpecifiedAirline);
     		}
     	} else {
     		KEEP_GOING = true;
