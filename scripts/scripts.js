@@ -1,4 +1,4 @@
-$(document).ready(function () {
+$(document).ready(function() {
 
 	/*************************************************************************************
     *																					 *
@@ -135,7 +135,7 @@ $(document).ready(function () {
     $('#option-headers .updated-date-time').html('No report found');
 
     // Verify the fields
-    $('#positive-button').on('click', verifyFields);
+    $('#positive-button').on('click', verify);
 
     // Sets positive button into original state
     $('#negative-button').on('click', cancel);
@@ -241,7 +241,7 @@ $(document).ready(function () {
     }
 
     // Checks if fields are verified
-    function verifyFields() {
+    function verify() {
     	var textareas = $('textarea');
     	$('#datepicker').val(convertToDisplayDate(new Date()));
     	// If the create button is enabled, textfields should still be disabled
@@ -572,7 +572,7 @@ $(document).ready(function () {
 
     /*************************************************************************************
     *																					 *
-    * FUNCTIONS - LABELS AND TABS       											     *
+    * FUNCTIONS - LABELS       											                 *
     *																					 *
     *************************************************************************************/
 
@@ -593,6 +593,12 @@ $(document).ready(function () {
     	}
     	$('#option-headers .updated-date-time').html(timestamp);
     }
+
+    /*************************************************************************************
+    *																					 *
+    * FUNCTIONS - TABS       											                 *
+    *																					 *
+    *************************************************************************************/
 
     // Updates which tab gets set to active (highlighted)
     function updateActive() {
@@ -919,13 +925,13 @@ $(document).ready(function () {
     			createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function() {
     				getAllDocuments(fillSpecifiedAirline);
     			});
-    			// Calls this function again, but with different data
+    		} else {
+    			KEEP_GOING = true;
     		}
     	} else {
     		KEEP_GOING = true;
     		$('#datepicker').val(convertToDisplayDate(new Date($('#datepicker').val())));
-    		createAndDisplayModal('noDocsModal', 'No data available', 'No documents found in the database. The default template will be used.');
-    		getTemplates();
+    		createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', getTemplates);
     	}
     	$('#option-headers div').removeClass('loader');
     }
@@ -981,9 +987,11 @@ $(document).ready(function () {
     	var templates = response[0]['templates'];
     	var airlinesInSelectedTemplate = templates[CURRENT_INITIAL_TEMPLATE];
     	var airlineCode = $('.active span').html();
-   //  	for (airline in airlinesInSelectedTemplate) {
-			// AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
-   //  	}
+    	for (airline in airlinesInSelectedTemplate) {
+    		if (AIRLINE_MANUAL_DATA[airline] == null) {
+    			AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+    		}
+    	}
    		AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
     	fillInFields(airlineCode);
     }
