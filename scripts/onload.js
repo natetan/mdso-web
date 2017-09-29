@@ -3,7 +3,8 @@
 * INITIAL ONLOAD FUNCTIONS - 2     													 *
 *																					 *
 *************************************************************************************/
-
-getAirlineMetrics();
-getLastUpdatedDocument();
-disableFields();
+define(['metrics', 'callbacks', 'helpers'], function(m ,c, h) {
+	m.getAirlineMetrics();
+	c.getLastUpdatedDocument();
+	h.disableFields();
+});

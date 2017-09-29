@@ -4,32 +4,52 @@
 *																					 *
 *************************************************************************************/
 
-// Gets all the documents in the database
-function getAllDocuments(callback) {
-    getRequest('/RestClient/GetAllDocuments', callback);
-}
+define(['requests', 'callbacks'], function(requests, callbacks) {
+	// Gets all the documents in the database
+	function getAllDocuments(callback) {
+	    requests.getRequest('/RestClient/GetAllDocuments', callback);
+	}
 
-// Gets the most recent document
-function getLastUpdatedDocument() {
-	getRequest('/RestClient/GetAllDocuments', fillManualData);
-}
+	// Gets the most recent document
+	function getLastUpdatedDocument() {
+		requests.getRequest('/RestClient/GetAllDocuments', callbacks.fillManualData);
+	}
 
-// Gets the document by date
-function getMostRecentDocument(date) {
-	getRequest('/RestClient/GetMostRecentDocument', fillSpecifiedAirline, date);
-}
+	// Gets historical documents based on date
+	function getHistoricalDocument() {
+		$('#option-headers div').addClass('loader');
+		var date = $('#datepicker').val();
+		var filter = '&filter=all';
+		getMostRecentDocument('date=' + date + filter);
+	}
 
-// Gets the airline metrics
-function getAirlineMetrics() {
-    getRequest('/RestClient/GetAirlineMetrics', fillMetrics);
-}
+	// Gets the document by date
+	function getMostRecentDocument(date) {
+		requests.getRequest('/RestClient/GetMostRecentDocument', callbacks.fillSpecifiedAirline, date);
+	}
 
-// Gets the templates
-function getTemplates() {
-	getRequest('/RestClient/GetTemplates', useInitialTemplate);
-}
+	// Gets the airline metrics
+	function getAirlineMetrics() {
+	    requests.getRequest('/RestClient/GetAirlineMetrics', callbacks.fillMetrics);
+	}
 
-// Posts the document to the database
-function postDocument(jsonData) {
-	postRequest('RestClient/Post', jsonData);
-}
+	// Gets the templates
+	function getTemplates() {
+		requests.getRequest('/RestClient/GetTemplates', callbacks.useInitialTemplate);
+	}
+
+	// Posts the document to the database
+	function postDocument(jsonData) {
+		requests.postRequest('RestClient/Post', jsonData);
+	}
+
+	return {
+		getAllDocuments: getAllDocuments,
+		getLastUpdatedDocument: getLastUpdatedDocument,
+		getHistoricalDocument: getHistoricalDocument,
+		getMostRecentDocument: getMostRecentDocument,
+		getAirlineMetrics: getAirlineMetrics,
+		getTemplates: getTemplates,
+		postDocument: postDocument
+	};
+});
