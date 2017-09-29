@@ -46,3 +46,5 @@ function isEmoji(text) {
 
     return reg.test(text);
 }
+
+export { everythingIsVerified, fieldsValidated, fieldsAreEmpty, isEmoji }

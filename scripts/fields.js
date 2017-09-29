@@ -4,6 +4,8 @@
 *																					 *
 *************************************************************************************/
 
+import { isEmoji } from 'validation';
+
 // Fills in the fields with the data they're verified with
 function fillInFields(airlineCode) {
 	var fields = null;
