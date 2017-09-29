@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-import { isEmoji } from 'validation';
+console.log(validation);
 
 // Fills in the fields with the data they're verified with
 function fillInFields(airlineCode) {
@@ -141,7 +141,7 @@ function fillInFields(airlineCode) {
 
             // Regex here
             // var pattern = /^[a-zA-Z0-9!~`@#\$%\^\&*\)\(+=._-]+$/;
-            if (isEmoji(charStr) /*|| !pattern.test(charStr)*/) {
+            if (validation.isEmoji(charStr) /*|| !pattern.test(charStr)*/) {
                 return false;
             }
         },
