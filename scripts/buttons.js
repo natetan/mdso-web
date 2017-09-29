@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['fields', 'helpers', 'ajax', 'labels'], function(fields, helpers, ajax, labels) {
+define(['fields', 'helpers', 'ajax'], function(fields, helpers, ajax) {
 
 
     // Cancel button functionality
@@ -25,7 +25,7 @@ define(['fields', 'helpers', 'ajax', 'labels'], function(fields, helpers, ajax, 
     function submit() {
     	if (REAL_POST) {
     		ajax.postDocument(FINAL_JSON_DOCUMENT);
-    		labels.removeCheckMarks();
+    		helpers.removeCheckMarks();
     	} else {
             console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));
         }

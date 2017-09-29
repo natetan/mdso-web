@@ -102,6 +102,7 @@ var KEEP_GOING = true;
 
 console.log('testing data main initialization');
 
-require(["fields"], function(fields) {
-	fields.fillInFields();
+require(['init', 'fields'], function(init) {
+	init.init();
+	init.loadInitialFunctions();
 });

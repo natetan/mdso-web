@@ -24,4 +24,8 @@ define(['metrics', 'helpers'], function(metrics, helpers) {
         	helpers.createAndDisplayModal('editModeModal', 'Unable to switch tabs', 'You are currently in edit mode. Please save or cancel before continuing.');
         }
     }
+
+    return {
+        updateActive: updateActive
+    }
 });

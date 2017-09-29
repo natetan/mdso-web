@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['helpers', 'buttons', 'tabs'], function(helpers, buttons, tabs) {
+define(['helpers', 'buttons', 'tabs', 'ajax'], function(helpers, buttons, tabs, ajax) {
 
 	function init() {
 		// Alerts the user when they reload to see if they want to reload
@@ -50,7 +50,14 @@ define(['helpers', 'buttons', 'tabs'], function(helpers, buttons, tabs) {
 		$('textarea').prop('maxLength', 256);
 	}
 
+	function loadInitialFunctions() {
+		ajax.getAirlineMetrics();
+		ajax.getLastUpdatedDocument();
+		helpers.disableFields();
+	}
+	
 	return {
-		init: init
+		init: init,
+		loadInitialFunctions: loadInitialFunctions
 	}
 });
