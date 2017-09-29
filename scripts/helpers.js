@@ -187,3 +187,8 @@ function setGlobals(airlineCode, currentAirlineObject) {
 	CURRENT_TEMPLATE[airlineCode] = currentAirlineObject['Template'];
 	CURRENT_DATE[airlineCode] = convertToAPIAcceptedDate(new Date(currentAirlineObject['Timestamp']));
 }
+
+// Disables the textarea fields
+function disableFields() {
+    $('textarea').prop('disabled', true);
+}
