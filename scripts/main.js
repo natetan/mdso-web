@@ -102,7 +102,7 @@ var KEEP_GOING = true;
 
 console.log('testing data main initialization');
 
-require(['init', 'fields'], function(init) {
+require(['init'], function(init) {
 	init.init();
 	init.loadInitialFunctions();
 });

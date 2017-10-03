@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define([], function() {
+define(function() {
     // Switches the metrics based on the airlineCode provided
     function switchMetrics(airlineCode) {
         var metrics = AIRLINE_METRICS[airlineCode];
@@ -79,5 +79,5 @@ define([], function() {
 
     return {
         switchMetrics: switchMetrics
-    };
+    }
 });

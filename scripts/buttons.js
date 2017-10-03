@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['fields', 'helpers', 'ajax'], function(fields, helpers, ajax) {
+define(['helpers', 'ajax'], function(helpers, ajax) {
 
 
     // Cancel button functionality
@@ -16,7 +16,7 @@ define(['fields', 'helpers', 'ajax'], function(fields, helpers, ajax) {
     	$(this).prop('disabled', true);
 
     	var airlineCode = $('.active span').html();
-    	fields.fillInFields(airlineCode);
+    	helpers.fillInFields(airlineCode);
     	helpers.enableDropdowns(true);
     	$('#datepicker').val(helpers.formatFromISODate(CURRENT_DATE[airlineCode]));
     }

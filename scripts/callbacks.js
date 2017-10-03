@@ -4,8 +4,9 @@
 *																					 *
 *************************************************************************************/
 
-define(['helpers', 'ajax', 'fields'], function(helpers, ajax, fields) {
+define(['../require', 'helpers', 'metrics', 'ajax'], function(require, helpers, metrics, ajax) {
 
+	console.log('goes here first');
 
 	// Fills the manual data for the given airline with the template and date selected
 	function fillSpecifiedAirline(response) {
@@ -36,15 +37,15 @@ define(['helpers', 'ajax', 'fields'], function(helpers, ajax, fields) {
 				$('#template-dropdown').prop('value', template);
 				$('#datepicker').prop('value', date);
 				helpers.createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function() {
-					ajax.getAllDocuments(fillSpecifiedAirline);
+					require('ajax').getAllDocuments(fillSpecifiedAirline);
 				});
 			} else {
 				KEEP_GOING = true;
 			}
 		} else {
 			KEEP_GOING = true;
-			$('#datepicker').val(convertToDisplayDate(new Date($('#datepicker').val())));
-			helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', getTemplates);
+			$('#datepicker').val(helpers.convertToDisplayDate(new Date($('#datepicker').val())));
+			helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', require('ajax').getTemplates);
 		}
 		$('#option-headers div').removeClass('loader');
 	}
@@ -66,17 +67,17 @@ define(['helpers', 'ajax', 'fields'], function(helpers, ajax, fields) {
 			helpers.switchAirlineData('AS');
 		} else {
 			helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found in the database. The default template will be used.');
-			ajax.getTemplates();
+			require('ajax').getTemplates();
 		}
 	}
 
 	// Fills in the global metrics object
 	function fillMetrics(response) {
 	    if (response !== null && response !== 'null') {
-	        var metrics = $.parseJSON(response);
-	        for (var i = 0; i < metrics.length; i++) {
+	        var metricsObject = $.parseJSON(response);
+	        for (var i = 0; i < metricsObject.length; i++) {
 	            var metricArray = {};
-	            var metric = metrics[i];
+	            var metric = metricsObject[i];
 	            var airlineCode = metric['Airline'].trim(); // OO
 	            metricArray['A0'] = metric['A0'];
 	            metricArray['A4'] = metric['A4'];
@@ -90,7 +91,7 @@ define(['helpers', 'ajax', 'fields'], function(helpers, ajax, fields) {
 	            AIRLINE_METRICS[airlineCode] = metricArray;
 	            $('#metrics-header .updated-date-time').html(helpers.getDate());
 	        }
-	        helpers.switchMetrics('AS');
+	        metrics.switchMetrics('AS');
 	    }
 	}
 
@@ -106,7 +107,7 @@ define(['helpers', 'ajax', 'fields'], function(helpers, ajax, fields) {
 			}
 		}
 			AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
-		fields.fillInFields(airlineCode);
+		helpers.fillInFields(airlineCode);
 	}
 
 	return {

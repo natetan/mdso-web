@@ -32,10 +32,10 @@ define(['helpers', 'buttons', 'tabs', 'ajax'], function(helpers, buttons, tabs, 
 		// Submit button
 		$('#submit-button').on('click', buttons.submit);
 
-		$('#template-dropdown').on('change', helpers.getHistoricalDocument);
+		$('#template-dropdown').on('change', ajax.getHistoricalDocument);
 
 		// Changes the document based on the selected date
-		$('#datepicker').on('change', helpers.getHistoricalDocument);
+		$('#datepicker').on('change', ajax.getHistoricalDocument);
 		// Sets the jqueryui datepicker to the input
 		var datepicker = $('#datepicker').datepicker();
 		// $('#datepicker').datepicker('option', 'dateFormat', 'm/dd/yy');
