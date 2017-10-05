@@ -992,7 +992,23 @@ $(document).ready(function() {
     			AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
     		}
     	}
+
+        // Adding this state to avoid the null
    		AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
+        var jsonObject = {
+            'Status': 0,
+            'AirlineCode': airlineCode,
+            'Timestamp': getDate(),
+            'UserId': 'BATCH',
+            'Template': CURRENT_INITIAL_TEMPLATE,
+            'ManualDataList': []
+        };
+        for (var i = 0; i < AIRLINE_MANUAL_DATA[airlineCode].length; i++) {
+            var currentManualDataField = AIRLINE_MANUAL_DATA[airlineCode][i];
+            jsonObject['ManualDataList'].push(currentManualDataField);
+        }
+        FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
+        
     	fillInFields(airlineCode);
     }
 });

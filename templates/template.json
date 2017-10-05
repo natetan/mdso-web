@@ -2,8 +2,8 @@
 	"templates": {
 		"0500": {
 			"AS": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
@@ -14,8 +14,8 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"VX": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
@@ -25,41 +25,41 @@
 				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""}
 			],
 			"QX": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
-				{"FieldKey":"spares", "FieldName":"L48 Spares", "FieldValue": ""},
+				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"OO": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
-				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
-				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
-				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""},
-				{"FieldKey":"atc", "FieldName":"Air Traffic Control", "FieldValue": ""},
-				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""}
-			],
-			"KS": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
-				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
-				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
-				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
-				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
 				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""}
+			],
+			"KS": [
+				{"FieldKey":"cdd", "FieldName":"Core Dept D15", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
+				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
+				{"FieldKey":"ts", "FieldName":"Tech Stops", "FieldValue": ""},
+				{"FieldKey":"extras", "FieldName":"Extras", "FieldValue": ""},
+				{"FieldKey":"to", "FieldName":"Today's Outlook", "FieldValue": ""},
+				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
+				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""},
+				{"FieldKey":"boh", "FieldName":"Bags on Hand", "FieldValue": ""},
+				{"FieldKey":"standbys", "FieldName":"Standbys", "FieldValue": ""}
 			]
 		},
 		"0930": {
 			"AS": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
@@ -69,9 +69,9 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"VX": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
-				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
+				{"FieldKey":"ots", "FieldName":"OTS", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
@@ -80,29 +80,29 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"QX": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
-				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
+				{"FieldKey":"ots", "FieldName":"OTS", "FieldValue": ""},
 				{"FieldKey":"spares", "FieldName":"L48 Spares", "FieldValue": ""},
 				{"FieldKey":"qas", "FieldName":"QX Alaska Spare", "FieldValue": ""},
 				{"FieldKey":"aas", "FieldName":"AS Alaska Spare", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"OO": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
+				{"FieldKey":"atc", "FieldName":"Air Traffic Control", "FieldValue": ""},
+				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
-				{"FieldKey":"atc", "FieldName":"Air Traffic Control", "FieldValue": ""},
-				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"KS": [
 				{"FieldKey":"cdd", "FieldName":"Core Dept D15", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"extras", "FieldName":"Extras", "FieldValue": ""},
 				{"FieldKey":"ts", "FieldName":"Tech Stops", "FieldValue": ""},
@@ -114,20 +114,20 @@
 		},
 		"1500": {
 			"AS": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
-				{"FieldKey":"spares", "FieldName":"L48 Spares", "FieldValue": ""},
+				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"VX": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
@@ -138,7 +138,7 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"QX": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
@@ -150,21 +150,23 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"OO": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
-				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
-				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
-				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
+				{"FieldKey":"spares", "FieldName":"Spares", "FieldValue": ""},
+				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
+				{"FieldKey":"booked", "FieldName":"Booked LF", "FieldValue": ""},
+				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"KS": [
 				{"FieldKey":"cdd", "FieldName":"Core Dept D15", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
-				{"FieldKey":"extras", "FieldName":"Extras", "FieldValue": ""},
+				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"ts", "FieldName":"Tech Stops", "FieldValue": ""},
+				{"FieldKey":"extras", "FieldName":"Extras", "FieldValue": ""},
 				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"boh", "FieldName":"Bags on Hand", "FieldValue": ""},
 				{"FieldKey":"standbys", "FieldName":"Standbys", "FieldValue": ""},
@@ -173,23 +175,23 @@
 		},
 		"2130": {
 			"AS": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Tomorrow's Booked LF", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"VX": [
-				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"itss", "FieldName":"IT System Status", "FieldValue": "GREEN"},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Tomorrow's Booked LF", "FieldValue": ""},
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"QX": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"atc", "FieldName":"Air Traffic Control (ATC)", "FieldValue": ""},
@@ -200,8 +202,10 @@
 				{"FieldKey":"comments", "FieldName":"Comments", "FieldValue": ""}
 			],
 			"OO": [
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"ots", "FieldName":"OTS Summary", "FieldValue": ""},
+				{"FieldKey":"atc", "FieldName":"Air Traffic Control", "FieldValue": ""},
+				{"FieldKey":"weather", "FieldName":"Weather (WX)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"booked", "FieldName":"Tomorrow's Booked LF", "FieldValue": ""},
@@ -209,7 +213,7 @@
 			],
 			"KS": [
 				{"FieldKey":"cdd", "FieldName":"Core Dept D15", "FieldValue": ""},
-				{"FieldKey":"xls", "FieldName":"Cancellations", "FieldValue": ""},
+				{"FieldKey":"xls", "FieldName":"Cancellations (XLS)", "FieldValue": ""},
 				{"FieldKey":"delays", "FieldName":"Delays", "FieldValue": ""},
 				{"FieldKey":"diversions", "FieldName":"Diversions", "FieldValue": ""},
 				{"FieldKey":"ts", "FieldName":"Tech Stops", "FieldValue": ""},
