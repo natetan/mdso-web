@@ -1,8 +1,7 @@
 define(function() {
 
-	function AirlineForm(fieldKey, fieldName, fieldValue) {
-		this.fieldName = fieldName;
-		this.fieldValue = fieldValue || '';
+	function AirlineForm(fields) {
+		this.fields = fields; // array of fields
 	}
 
 	return AirlineForm;
