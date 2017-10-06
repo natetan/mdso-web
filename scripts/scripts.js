@@ -990,25 +990,22 @@ $(document).ready(function() {
     	for (airline in airlinesInSelectedTemplate) {
     		if (AIRLINE_MANUAL_DATA[airline] == null) {
     			AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+                var jsonObject = {
+                    'Status': 0,
+                    'AirlineCode': airlineCode,
+                    'Timestamp': helpers.getDate(),
+                    'UserId': 'BATCH',
+                    'Template': CURRENT_INITIAL_TEMPLATE,
+                    'ManualDataList': []
+                };
+                for (var j = 0; j < AIRLINE_MANUAL_DATA[airlineCode].length; j++) {
+                    var currentManualDataField = AIRLINE_MANUAL_DATA[airlineCode][j];
+                    jsonObject['ManualDataList'].push(currentManualDataField);
+                }
     		}
+            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
     	}
-
-        // Adding this state to avoid the null
-   		AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
-        var jsonObject = {
-            'Status': 0,
-            'AirlineCode': airlineCode,
-            'Timestamp': getDate(),
-            'UserId': 'BATCH',
-            'Template': CURRENT_INITIAL_TEMPLATE,
-            'ManualDataList': []
-        };
-        for (var i = 0; i < AIRLINE_MANUAL_DATA[airlineCode].length; i++) {
-            var currentManualDataField = AIRLINE_MANUAL_DATA[airlineCode][i];
-            jsonObject['ManualDataList'].push(currentManualDataField);
-        }
-        FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airlineCode]] = jsonObject;
-        
-    	fillInFields(airlineCode);
+        console.log(FINAL_JSON_DOCUMENT);
+    	helpers.fillInFields(airlineCode);
     }
 });

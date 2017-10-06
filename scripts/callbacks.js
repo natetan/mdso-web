@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['../require', 'helpers', 'metrics', 'ajax'], function(require, helpers, metrics, ajax) {
+define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, metrics, ajax) {
 
 	console.log('goes here first');
 
@@ -96,19 +96,31 @@ define(['../require', 'helpers', 'metrics', 'ajax'], function(require, helpers, 
 	}
 
 	// Loads the initial template into the page if there is no previous data
-	function useInitialTemplate(response) {
-		response = $.parseJSON(response); // response is an array of size 1
-		var templates = response[0]['templates'];
-		var airlinesInSelectedTemplate = templates[CURRENT_INITIAL_TEMPLATE];
-		var airlineCode = $('.active span').html();
-		for (airline in airlinesInSelectedTemplate) {
-			if (AIRLINE_MANUAL_DATA[airline] == null) {
-				AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
-			}
-		}
-			AIRLINE_MANUAL_DATA[airlineCode] = airlinesInSelectedTemplate[airlineCode];
-		helpers.fillInFields(airlineCode);
-	}
+    function useInitialTemplate(response) {
+        response = $.parseJSON(response); // response is an array of size 1
+        var templates = response[0]['templates'];
+        var airlinesInSelectedTemplate = templates[CURRENT_INITIAL_TEMPLATE];
+        var airlineCode = $('.active span').html();
+        for (airline in airlinesInSelectedTemplate) {
+            if (AIRLINE_MANUAL_DATA[airline] == null) {
+                AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+                var jsonObject = {
+                    'Status': 0,
+                    'AirlineCode': airline,
+                    'Timestamp': helpers.getDate(),
+                    'UserId': 'BATCH',
+                    'Template': CURRENT_INITIAL_TEMPLATE,
+                    'ManualDataList': []
+                };
+                for (var i = 0; i < AIRLINE_MANUAL_DATA[airline].length; i++) {
+                    var currentManualDataField = AIRLINE_MANUAL_DATA[airline][i];
+                    jsonObject['ManualDataList'].push(currentManualDataField);
+                }
+            }
+            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airline]] = jsonObject;
+        }
+        helpers.fillInFields(airlineCode);
+    }
 
 	return {
 		fillSpecifiedAirline: fillSpecifiedAirline,
