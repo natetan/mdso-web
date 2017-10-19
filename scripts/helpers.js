@@ -21,7 +21,8 @@ define(['validation'], function(validation) {
         	formattedDate = new Date(0);
         	formattedDate.setUTCSeconds(milliseconds);
         }
-        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString('en-GB');
+        var options = { hour12: false };
+        return formattedDate.toDateString() + ' ' + formattedDate.toLocaleTimeString('en-US', options);
     }
 
     // Converts date to a string in the format of mm/dd/yyyy
@@ -198,7 +199,11 @@ define(['validation'], function(validation) {
     	AIRLINE_TIMESTAMP[airlineCode] = currentAirlineObject['Timestamp'];
     	AIRLINE_MANUAL_DATA[airlineCode] = currentAirlineObject['ManualDataList'];
     	CURRENT_TEMPLATE[airlineCode] = currentAirlineObject['Template'];
-    	CURRENT_DATE[airlineCode] = convertToAPIAcceptedDate(new Date(currentAirlineObject['Timestamp']));
+    	CURRENT_DATE[airlineCode] = convertToAPIAcceptedDate(new Date(cleanDateString(currentAirlineObject['Timestamp'])));
+    }
+
+    function cleanDateString(dateString) {
+        return dateString.replace(/\u200e/g, '');
     }
 
     // Disables the textarea fields
