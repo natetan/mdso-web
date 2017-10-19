@@ -1,7 +1,7 @@
 /*************************************************************************************
-*																					 *
-* GLOBAL VARIABLES - 1     													         *
-*																					 *
+*                                                                                    *
+* GLOBAL VARIABLES - 1                                                               *
+*                                                                                    *
 *************************************************************************************/
 
 // Global Variable representing the final document
@@ -10,7 +10,7 @@ var FINAL_JSON_DOCUMENT = {
 };
 
 var AIRLINE_MANUAL_DATA = {
-	'AS': null,
+    'AS': null,
     'VX': null,
     'QX': null,
     'OO': null,
@@ -54,7 +54,7 @@ var AIRLINE_METRICS = {
 }
 
 var AIRLINE_TIMESTAMP = {
-	'AS': null,
+    'AS': null,
     'VX': null,
     'QX': null,
     'OO': null,
@@ -62,15 +62,15 @@ var AIRLINE_TIMESTAMP = {
 }
 
 var CURRENT_TEMPLATE = {
-	'AS': null,
-    'VX': null,
-    'QX': null,
-    'OO': null,
-    'KS': null
+    'AS': '0500',
+    'VX': '0500',
+    'QX': '0500',
+    'OO': '0500',
+    'KS': '0500'
 }
 
 var CURRENT_DATE = {
-	'AS': null,
+    'AS': null,
     'VX': null,
     'QX': null,
     'OO': null,
@@ -89,20 +89,8 @@ var REAL_POST = true;
 // True if using live data
 var USE_LIVE_DATA = true;
 
-/* 
-QUICK FIX for fillSpecifiedAirline to not get stuck in inifnite loop
-The flow of the issue:
-	Let's say the only document in the database is a 0500 template for AS
-	Switching the template dropdown to 930 means it tries to find that with
-	the most recent document. None will be found, so it calls the getAllDocuments
-	with the same callback. The response is not null, so it goes through that again,
-	calling getAllDocuments again at the end.
-*/
-var KEEP_GOING = true;
-
-console.log('testing data main initialization');
 
 require(['init'], function(init) {
-	init.init();
-	init.loadInitialFunctions();
+    init.init();
+    init.loadInitialFunctions();
 });
