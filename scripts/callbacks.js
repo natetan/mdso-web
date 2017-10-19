@@ -116,10 +116,12 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
                     var currentManualDataField = AIRLINE_MANUAL_DATA[airline][i];
                     jsonObject['ManualDataList'].push(currentManualDataField);
                 }
-            } else {
-            	AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+                FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airline]] = jsonObject;
             }
-            FINAL_JSON_DOCUMENT['data'][TAB_INDEX[airline]] = jsonObject;
+
+            if (airline === airlineCode) {
+                AIRLINE_MANUAL_DATA[airline] = airlinesInSelectedTemplate[airline];
+            } 
         }
         helpers.fillInFields(airlineCode);
     }
