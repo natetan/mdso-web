@@ -4,11 +4,11 @@
 *																					 *
 *************************************************************************************/
 
-define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, metrics, ajax) {
+define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, metrics, ajax) {
 
-	console.log('goes here first');
+    console.log('goes here first');
 
-	// Fills the manual data for the given airline with the template and date selected
+    // Fills the manual data for the given airline with the template and date selected
     function fillSpecifiedAirline(response) {
         var airlineCode = $('.active span').html();
         var template = $('#template-dropdown').val();
@@ -21,7 +21,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
                 require('ajax').getAllDocuments(usingAllDocuments);
             });
         }
-		$('#option-headers div').removeClass('loader');
+        $('#option-headers div').removeClass('loader');
     }
 
     function usingAllDocuments(response) {
@@ -31,7 +31,9 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
         var notFound = helper(response, airlineCode, template, date);
         if (notFound) { // use template
             $('#datepicker').val(helpers.convertToDisplayDate(new Date($('#datepicker').val())));
-            helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', require('ajax').getTemplates);
+            helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', function () {
+                require('ajax').getTemplates();
+            });
         }
     }
 
@@ -76,7 +78,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
 			}
 			helpers.switchAirlineData('AS');
 		} else {
-			helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found in the database. The default template will be used.');
+			helpers.createAndDisplayModal('noLatestDocModal', 'No data available', 'No documents found in the database. The default template will be used.');
 			require('ajax').getTemplates();
 		}
 	}
@@ -105,7 +107,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
 	    }
 	}
 
-	// Loads the initial template into the page if there is no previous data
+    // Loads the initial template into the page if there is no previous data
     function useInitialTemplate(response) {
         response = $.parseJSON(response); // response is an array of size 1
         var templates = response[0]['templates'];
