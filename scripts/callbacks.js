@@ -9,46 +9,56 @@ define(['require', 'helpers', 'metrics', 'ajax'], function(require, helpers, met
 	console.log('goes here first');
 
 	// Fills the manual data for the given airline with the template and date selected
-	function fillSpecifiedAirline(response) {
-		var airlineCode = $('.active span').html();
-		var template = $('#template-dropdown').val();
-		CURRENT_TEMPLATE[airlineCode] = template;
-		CURRENT_INITIAL_TEMPLATE = template;
-		var date = $('#datepicker').val();
-		if (response !== null && response !== 'null' && KEEP_GOING) {
-			var documents = $.parseJSON(response);
-			for (var i = documents.length - 1; i >= 0 && KEEP_GOING; i--) {
-				var currentDocument = documents[i];
-				var airlines = currentDocument['data'];
-				for (var j = 0; j < airlines.length; j++) {
-					var currentAirline = airlines[j];
-					if (currentAirline['AirlineCode'] == airlineCode && currentAirline['Template'] == template) {
-						var milliseconds = currentDocument['_ts'];
-						$('#option-headers .updated-date-time').html(helpers.getDate(milliseconds));
-						helpers.setGlobals(airlineCode, currentAirline);
-						KEEP_GOING = false;
-					}
-				}
-			}
-			helpers.switchAirlineData(airlineCode);
-			// Sets the values of the dropdowns, so user can switch again from that state
-			if (KEEP_GOING) {
-				KEEP_GOING = false;
-				$('#template-dropdown').prop('value', template);
-				$('#datepicker').prop('value', date);
-				helpers.createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function() {
-					require('ajax').getAllDocuments(fillSpecifiedAirline);
-				});
-			} else {
-				KEEP_GOING = true;
-			}
-		} else {
-			KEEP_GOING = true;
-			$('#datepicker').val(helpers.convertToDisplayDate(new Date($('#datepicker').val())));
-			helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', require('ajax').getTemplates);
-		}
+    function fillSpecifiedAirline(response) {
+        var airlineCode = $('.active span').html();
+        var template = $('#template-dropdown').val();
+        var date = $('#datepicker').val();
+        var notFound = helper(response, airlineCode, template, date);
+        if (notFound) {
+            $('#template-dropdown').prop('value', template);
+            $('#datepicker').prop('value', date);
+            helpers.createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function () {
+                require('ajax').getAllDocuments(usingAllDocuments);
+            });
+        }
 		$('#option-headers div').removeClass('loader');
-	}
+    }
+
+    function usingAllDocuments(response) {
+        var airlineCode = $('.active span').html();
+        var template = $('#template-dropdown').val();
+        var date = $('#datepicker').val();
+        var notFound = helper(response, airlineCode, template, date);
+        if (notFound) { // use template
+            $('#datepicker').val(helpers.convertToDisplayDate(new Date($('#datepicker').val())));
+            helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', require('ajax').getTemplates);
+        }
+    }
+
+    function helper(response, airlineCode, template, date) {
+        CURRENT_TEMPLATE[airlineCode] = template;
+        CURRENT_INITIAL_TEMPLATE = template;
+        var notFound = true;
+        // If response isn't null, we found something on the current date with the current template'
+        if (response !== null && response !== 'null') {
+            var documents = $.parseJSON(response);
+            for (var i = documents.length - 1; i >= 0 && notFound; i--) {
+                var currentDocument = documents[i];
+                var airlines = currentDocument['data'];
+                for (var j = 0; j < airlines.length; j++) {
+                    var currentAirline = airlines[j];
+                    if (currentAirline['AirlineCode'] == airlineCode && currentAirline['Template'] == template) {
+                        var milliseconds = currentDocument['_ts'];
+                        $('#option-headers .updated-date-time').html(helpers.getDate(milliseconds));
+                        helpers.setGlobals(airlineCode, currentAirline);
+                        notFound = false;
+                    }
+                }
+            }
+            helpers.switchAirlineData(airlineCode);
+        }
+        return notFound;
+    }
 
 	// Gets the most recent document
 	function fillManualData(response) {
