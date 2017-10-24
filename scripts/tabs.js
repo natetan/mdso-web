@@ -14,6 +14,7 @@ define(['metrics', 'helpers'], function(metrics, helpers) {
 
             // Changes the header based on the airline
             var currentSpan = $('.active span');
+            CURRENT_ACTIVE_AIRLINE = currentSpan.html();
             var airlineCode = currentSpan.html();
             var airlineName = currentSpan.attr('name');
             $('#airline-header span').html(airlineName + ' (' + airlineCode + ')');

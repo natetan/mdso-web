@@ -4,15 +4,12 @@
 *																					 *
 *************************************************************************************/
 
-define(['requests', 'callbacks'], function(requests, callbacks) {
+define(['services/RestService'], function(client) {
+
 	// Gets all the documents in the database
 	function getAllDocuments(callback) {
-	    requests.getRequest('/RestClient/GetAllDocuments', callback);
-	}
-
-	// Gets the most recent document
-	function getLastUpdatedDocument() {
-		requests.getRequest('/RestClient/GetAllDocuments', callbacks.fillManualData);
+	    var documents = client.getRequest('/RestClient/GetAllDocuments');
+	    return $.parseJSON(documents);
 	}
 
 	// Gets historical documents based on date
@@ -20,27 +17,30 @@ define(['requests', 'callbacks'], function(requests, callbacks) {
 		$('#option-headers div').addClass('loader');
 		var date = $('#datepicker').val();
 		var filter = '&filter=all';
-		getMostRecentDocument('date=' + date + filter);
+		return getMostRecentDocument('date=' + date + filter);
 	}
 
 	// Gets the document by date
 	function getMostRecentDocument(date) {
-		requests.getRequest('/RestClient/GetMostRecentDocument', callbacks.fillSpecifiedAirline, date);
+		var documents = client.getRequest('/RestClient/GetMostRecentDocument', date);
+		return $.parseJSON(documents);
 	}
 
 	// Gets the airline metrics
 	function getAirlineMetrics() {
-	    requests.getRequest('/RestClient/GetAirlineMetrics', callbacks.fillMetrics);
+	    var documents = client.getRequest('/RestClient/GetAirlineMetrics');
+	    return $.parseJSON(documents);
 	}
 
 	// Gets the templates
 	function getTemplates() {
-		requests.getRequest('/RestClient/GetTemplates', callbacks.useInitialTemplate);
+		var documents = client.getRequest('/RestClient/GetTemplates');
+		return $.parseJSON(documents);
 	}
 
 	// Posts the document to the database
 	function postDocument(jsonData) {
-		requests.postRequest('RestClient/Post', jsonData);
+		client.postRequest('RestClient/Post', jsonData);
 	}
 
 	return {

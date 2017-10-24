@@ -6,8 +6,6 @@
 
 define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, metrics, ajax) {
 
-    console.log('goes here first');
-
     // Fills the manual data for the given airline with the template and date selected
     function fillSpecifiedAirline(response) {
         var airlineCode = $('.active span').html();

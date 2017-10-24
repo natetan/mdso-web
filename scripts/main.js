@@ -82,6 +82,8 @@ var IN_CREATE_STATE = true;
 
 var CURRENT_INITIAL_TEMPLATE = '0500';
 
+var CURRENT_ACTIVE_AIRLINE = 'AS';
+
 // Change to true to post to database
 // Otherwise, log posted document to console
 var REAL_POST = true;

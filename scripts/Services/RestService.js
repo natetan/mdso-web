@@ -1,4 +1,4 @@
-define(['helpers', 'callbacks'], function(helpers, callbacks) {
+define(['helpers'], function(helpers) {
 	// Default parameters not used because they're not supported in IE
     function getRequest(url) {
     	getRequest(url, null);
@@ -39,12 +39,7 @@ define(['helpers', 'callbacks'], function(helpers, callbacks) {
 
     // Gets all the documents in the database
 	function getAllDocuments() {
-	    getRequest('/RestClient/GetAllDocuments');
-	}
-
-	// Gets the most recent document
-	function getLastUpdatedDocument() {
-		getRequest('/RestClient/GetAllDocuments');
+	    return getRequest('/RestClient/GetAllDocuments');
 	}
 
 	// Gets historical documents based on date
@@ -52,22 +47,22 @@ define(['helpers', 'callbacks'], function(helpers, callbacks) {
 		$('#option-headers div').addClass('loader');
 		var date = $('#datepicker').val();
 		var filter = '&filter=all';
-		getMostRecentDocument('date=' + date + filter);
+		return getMostRecentDocument('date=' + date + filter);
 	}
 
 	// Gets the document by date
 	function getMostRecentDocument(date) {
-		getRequest('/RestClient/GetMostRecentDocument', date);
+		return getRequest('/RestClient/GetMostRecentDocument', date);
 	}
 
 	// Gets the airline metrics
 	function getAirlineMetrics() {
-	    getRequest('/RestClient/GetAirlineMetrics');
+	    return getRequest('/RestClient/GetAirlineMetrics');
 	}
 
 	// Gets the templates
 	function getTemplates() {
-		getRequest('/RestClient/GetTemplates');
+		return getRequest('/RestClient/GetTemplates');
 	}
 
 	// Posts the document to the database
@@ -77,7 +72,6 @@ define(['helpers', 'callbacks'], function(helpers, callbacks) {
 
     return {
         getAllDocuments: getAllDocuments,
-		getLastUpdatedDocument: getLastUpdatedDocument,
 		getHistoricalDocument: getHistoricalDocument,
 		getMostRecentDocument: getMostRecentDocument,
 		getAirlineMetrics: getAirlineMetrics,
