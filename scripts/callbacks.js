@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, metrics, ajax) {
+define(['require', 'helpers', 'metrics', 'Services/RestService'], function (require, helpers, metrics, service) {
 
     // Fills the manual data for the given airline with the template and date selected
     function fillSpecifiedAirline(response) {
@@ -16,7 +16,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, me
             $('#template-dropdown').prop('value', template);
             $('#datepicker').prop('value', date);
             helpers.createAndDisplayModal('noTempModal', 'No data available', 'Data for this template on selected date has not yet been created. Most recent submission of selected template will display.', function () {
-                require('ajax').getAllDocuments(usingAllDocuments);
+                require('service').getAllDocuments(usingAllDocuments);
             });
         }
         $('#option-headers div').removeClass('loader');
@@ -30,7 +30,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, me
         if (notFound) { // use template
             $('#datepicker').val(helpers.convertToDisplayDate(new Date($('#datepicker').val())));
             helpers.createAndDisplayModal('noDocsModal', 'No data available', 'No documents found. The default template will be used.', function () {
-                require('ajax').getTemplates();
+                require('service').getTemplates();
             });
         }
     }
@@ -77,7 +77,7 @@ define(['require', 'helpers', 'metrics', 'ajax'], function (require, helpers, me
 			helpers.switchAirlineData('AS');
 		} else {
 			helpers.createAndDisplayModal('noLatestDocModal', 'No data available', 'No documents found in the database. The default template will be used.');
-			require('ajax').getTemplates();
+			require('service').getTemplates();
 		}
 	}
 

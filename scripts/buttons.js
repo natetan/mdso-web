@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['helpers', 'ajax'], function(helpers, ajax) {
+define(['helpers', 'Services/RestService'], function(helpers, service) {
 
 
     // Cancel button functionality
@@ -24,7 +24,7 @@ define(['helpers', 'ajax'], function(helpers, ajax) {
     // Submits the document as a whole to the database
     function submit() {
     	if (REAL_POST) {
-    		ajax.postDocument(FINAL_JSON_DOCUMENT);
+    		service.postDocument(FINAL_JSON_DOCUMENT);
     		helpers.removeCheckMarks();
     	} else {
             console.log(JSON.stringify(FINAL_JSON_DOCUMENT, null, ' '));

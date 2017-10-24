@@ -4,7 +4,7 @@
 *																					 *
 *************************************************************************************/
 
-define(['helpers', 'buttons', 'tabs', 'services/RestService', 'controllers/AirlineMetricsController'], function(helpers, buttons, tabs, client, controller) {
+define(['helpers', 'buttons', 'tabs', 'services/RestService', 'controllers/AirlineMetricsController'], function(helpers, buttons, tabs, service, controller) {
 
 	function init() {
 		// Alerts the user when they reload to see if they want to reload
@@ -32,10 +32,10 @@ define(['helpers', 'buttons', 'tabs', 'services/RestService', 'controllers/Airli
 		// Submit button
 		$('#submit-button').on('click', buttons.submit);
 
-		$('#template-dropdown').on('change', client.getHistoricalDocument);
+		$('#template-dropdown').on('change', service.getHistoricalDocument);
 
 		// Changes the document based on the selected date
-		$('#datepicker').on('change', client.getHistoricalDocument);
+		$('#datepicker').on('change', service.getHistoricalDocument);
 		// Sets the jqueryui datepicker to the input
 		var datepicker = $('#datepicker').datepicker();
 		// $('#datepicker').datepicker('option', 'dateFormat', 'm/dd/yy');
@@ -51,9 +51,9 @@ define(['helpers', 'buttons', 'tabs', 'services/RestService', 'controllers/Airli
 	}
 
 	function loadInitialFunctions() {
-		var metrics = client.getAirlineMetrics();
+		var metrics = service.getAirlineMetrics();
 		controller.fillMetricsObject(metrics, CURRENT_ACTIVE_AIRLINE);
-		client.getLastUpdatedDocument();
+		service.getLastUpdatedDocument();
 		helpers.disableFields();
 	}
 	
