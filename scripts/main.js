@@ -4,6 +4,9 @@
 *                                                                                    *
 *************************************************************************************/
 
+// Disabling ajax caching on internet explorer
+$.ajaxSetup({ cache: false });
+
 // Global Variable representing the final document
 var FINAL_JSON_DOCUMENT = {
     'data': []
